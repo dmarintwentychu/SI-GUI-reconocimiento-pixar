@@ -7,7 +7,7 @@ from tkinter import filedialog
 import cv2
 import imutils
 
-
+#hola mi primer push#
 
 splash_root = Tk()
 width_of_window = 640
