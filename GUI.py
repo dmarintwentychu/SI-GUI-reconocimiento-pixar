@@ -1,3 +1,17 @@
+
+#Esto es para que cuando abras el programa en cualquier ordenador no tenga que hacer pip install y lo haga solo.
+import subprocess
+import sys
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+install("pillow")
+install("opencv-python")
+install("imutils")
+
+
+
 from threading import Thread
 from tkinter import *
 from PIL import ImageTk,Image
@@ -6,6 +20,10 @@ import time
 from tkinter import filedialog
 import cv2
 import imutils
+
+import tensorflow as tf
+from tensorflow import keras
+
 
 
 #PANTALLA SPLASH:
