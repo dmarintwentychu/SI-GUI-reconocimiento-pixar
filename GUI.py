@@ -7,8 +7,10 @@ from tkinter import filedialog
 import cv2
 import imutils
 
-#hola mi primer push#
 
+#PANTALLA SPLASH:
+
+#Formato de la pantalla de splash y vídeo:
 splash_root = Tk()
 width_of_window = 640
 height_of_window = 300
@@ -27,6 +29,7 @@ logo_path =  current_directory + "\data\logo\Logo.mp4"
 splash_label = Label(splash_root)
 splash_label.pack()
 
+#Función para ver el vídeo:
 def visualizar():
     global cap
     if cap is not None:
@@ -40,8 +43,7 @@ def visualizar():
             splash_label.image = img
             splash_label.after(10, visualizar)
 
-#funciones del main:
-a = 0
+#Funciones del main:
 def open():
     global actual_image, my_image_label, mainFrame, root
     
@@ -52,19 +54,20 @@ def open():
     my_image_label= Label(mainFrame,image=actual_image).grid()
 
 
-
-def main_window(): #Aqui empieza la ventana principal:
+#VENTANA PRINCIPAL:
+def main_window():
+    
+    #Formato de ventana:
     splash_root.destroy()
-
     root = Tk()
-
     root.geometry("1000x700")
     root.title("Fary")
-    #root.iconbitmap()
-    
+    #root.iconbitmap() #Si queremos poner un icono
+
+
+#LLamada a la ventana SPLASH
 cap = cv2.VideoCapture(logo_path)
 visualizar()
 splash_root.after(4000,main_window)   
 
 mainloop()
-##Prueba Alberto
