@@ -67,3 +67,4 @@ visualizar()
 splash_root.after(4000,main_window)   
 
 mainloop()
+##Prueba Alberto
