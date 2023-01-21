@@ -12,12 +12,11 @@ import os
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
-#model = tf.keras.models.load_model(current_directory + "path del modelo") 
+#model = tf.keras.models.load_model(current_directory + "\Model\EfficienNetB0") 
 
 #PANTALLA SPLASH:
 
 #Formato de la pantalla de splash y vídeo:
-
 
 splash_root = Tk()
 width_of_window = 640
