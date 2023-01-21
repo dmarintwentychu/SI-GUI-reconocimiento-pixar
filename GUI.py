@@ -1,34 +1,24 @@
-
-#Esto es para que cuando abras el programa en cualquier ordenador no tenga que hacer pip install y lo haga solo.
-import subprocess
-import sys
-
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-install("pillow")
-install("opencv-python")
-install("imutils")
-
-
-
-from threading import Thread
 from tkinter import *
 from PIL import ImageTk,Image
-import os
 import time
 from tkinter import filedialog
 import cv2
 import imutils
+import os
 
-import tensorflow as tf
-from tensorflow import keras
+#IMPORTANTE: ESTO TARDA 5s en funcionar + PUEDE DAR ERRORES AL HACER EL PIP INSTALL🤬🖕 (Solucionarlo es fácil al menos en windows, en mac ni idea)
+#import tensorflow as tf
+#from tensorflow import keras
 
+current_directory = os.path.dirname(os.path.realpath(__file__))
 
+#model = tf.keras.models.load_model(current_directory + "path del modelo") 
 
 #PANTALLA SPLASH:
 
 #Formato de la pantalla de splash y vídeo:
+
+
 splash_root = Tk()
 width_of_window = 640
 height_of_window = 300
@@ -41,7 +31,6 @@ splash_root.title("Fary")
 
 splash_root.overrideredirect(1)
 
-current_directory = os.path.dirname(os.path.realpath(__file__))
 logo_path =  current_directory + "\data\logo\Logo.mp4"
 
 splash_label = Label(splash_root)
@@ -74,6 +63,7 @@ def open():
 
 #VENTANA PRINCIPAL:
 def main_window():
+     
     
     #Formato de ventana:
     splash_root.destroy()
@@ -81,11 +71,15 @@ def main_window():
     root.geometry("1000x700")
     root.title("Fary")
     #root.iconbitmap() #Si queremos poner un icono
-
+    
+    
 
 #LLamada a la ventana SPLASH
+
 cap = cv2.VideoCapture(logo_path)
 visualizar()
+
 splash_root.after(4000,main_window)   
+
 
 mainloop()
