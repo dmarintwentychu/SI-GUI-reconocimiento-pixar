@@ -1,18 +1,20 @@
 from tkinter import *
+import PIL
 from PIL import ImageTk,Image
 import time
 from tkinter import filedialog
 import cv2
 import imutils
 import os
-
-#IMPORTANTE: ESTO TARDA 5s en funcionar + PUEDE DAR ERRORES AL HACER EL PIP INSTALL🤬🖕 (Solucionarlo es fácil al menos en windows, en mac ni idea)
-#import tensorflow as tf
-#from tensorflow import keras
+from tkinter import font
+from tkinter import ttk
+from tkinter.ttk import Progressbar
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
-#model = tf.keras.models.load_model(current_directory + "\Model\EfficienNetB0") 
+
+
+#IMPORTANTE: ESTO TARDA 5s en funcionar + PUEDE DAR ERRORES AL HACER EL PIP INSTALL🤬🖕 (Solucionarlo es fácil al menos en windows, en mac ni idea)
 
 #PANTALLA SPLASH:
 
@@ -31,7 +33,6 @@ splash_root.title("Fary")
 splash_root.overrideredirect(1)
 
 logo_path =  current_directory + "\data\logo\Logo.mp4"
-
 splash_label = Label(splash_root)
 splash_label.pack()
 
@@ -75,10 +76,54 @@ def main_window():
 
 #LLamada a la ventana SPLASH
 
-cap = cv2.VideoCapture(logo_path)
-visualizar()
+#cap = cv2.VideoCapture(logo_path)
+#visualizar()
 
-splash_root.after(4000,main_window)   
+progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF", bg="#2F6C60")
+progress_label.place(x=100,y=100)
+
+progress = ttk.Style()
+progress.theme_use("clam") #el theme se puede cambiar esto es una prueba
+progress.configure("red.Horizontal.TProgressbar", background = "#108cff")
+
+progress = Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate" , style ="red.Horizontal.TProgressbar")
+progress.place(x=125,y=225)
+
+i = 0
+def load():
+
+    global i, tf,keras, hub
+
+    if i==2:
+        import tensorflow as tf
+        txt = (str(10*i)+'%')
+        progress_label.config(text=txt)
+        progress_label.after(100,load)
+        progress["value"] = 10*i
+        i+=2
+    elif i == 6:
+        import tensorflow_hub as hub
+        model = tf.keras.models.load_model((current_directory + "\Model\model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+        txt = (str(10*i)+'%')
+        progress_label.config(text=txt)
+        progress_label.after(200,load)
+        progress["value"] = 10*i
+        i+=1
+    elif i == 8:
+        from tensorflow import keras
+        txt = (str(10*i)+'%')
+        progress_label.config(text=txt)
+        progress_label.after(200,load)
+        progress["value"] = 10*i
+        i+=1
+    elif i<=10:
+        txt = (str(10*i)+'%')
+        progress_label.config(text=txt)
+        progress_label.after(600,load)
+        progress["value"] = 10*i
+        i+= 1
+    else : splash_root.after(100,main_window)   
 
 
+load()
 mainloop()
