@@ -9,6 +9,8 @@ import os
 from tkinter import font
 from tkinter import ttk
 from tkinter.ttk import Progressbar
+from tkinter import messagebox
+import numpy as np
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
@@ -52,20 +54,115 @@ def visualizar():
             splash_label.after(10, visualizar)
 
 #Funciones del main:
-def open():
-    global actual_image, my_image_label, mainFrame, root
-    
-    mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
 
-    root.filename = filedialog.askopenfilename(initialdir="/",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
+#Abrir la foto que quieras para predecir
+def open():
+    global actual_image, my_image_label #mainFrame
+    
+    #mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
+
+    root.filename = filedialog.askopenfilename(initialdir=current_directory + "\Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
     actual_image = ImageTk.PhotoImage(Image.open(root.filename))
-    my_image_label= Label(mainFrame,image=actual_image).grid()
+    botonSelección.destroy()
+    frame.config(padx=100,pady=100)
+    my_image_label= Label(frame,image=actual_image).grid()
+    botonPredecir.config(state=NORMAL)
+        
+
+#predicción con tensorflow
+def predecir():
+
+    
+    tf.keras.backend.clear_session()  # Para restablecer fácilmente el estado del portátil. No necesario o si ni idea jiji
+
+
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    model = tf.keras.models.load_model((current_directory + "\Model\model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+
+    model.summary()
+
+
+    image = PIL.Image.open(root.filename)
+
+    #PREPROCESAMIENTO (mismo que en el colab):
+
+    #se ajusta la altura y anchura a la misma:
+    baseheight = 224
+    width = 224
+    image = np.array(image.resize((width, baseheight)))
+    print(image.shape)
+
+    #Como el formato es el siguiente (None,224,224,1) -> (1, 224, 224, 1):
+
+    image = np.expand_dims(image, axis=0) # To make the shape as (1, 224, 224)
+    image = np.expand_dims(image, axis=-1) # To make the shape as (1, 224, 224, 1)
+    print(image.shape)
+
+    #HAY QUE HACER EL MISMO PREPROCESAMIENTO O SI NO NO FUNCIONA .|.
+    normalization_layer = tf.keras.layers.Rescaling(1./255)
+    image = normalization_layer(image) 
+
+
+    predicted_batch = model.predict(image) # FUNCIÓN PARA PREDECIR LA IMAGEN
+
+    predicted_id = tf.math.argmax(predicted_batch, axis=-1)
+    predicted_id = predicted_id.numpy() #Sepasa a numpy porque el formato es raro (tuple)
+
+    print(predicted_id) #Número correspondiente al personaje predicho
+
+    #Esta es la lista para convertir el número predicho en su correspondiente label
+    class_names = ["Alfredo Linguini de Ratatoui","Boo de Monstruos S.A","Capitan B. McCrea de Wall-E","Carl Fredricksen de Up","Charles Muntz de Up","Chick Hicks de cars","Dash de los increibles","Doc Huston de cars","Dori de Buscando a Nemo","Edna de los increibles","Elastic girl de los increibles","Eva de Wall-E","Flo de cars","Frozono de los increibles","Gill de Buscando a Nemo","Guido de cars","Henry J. Waternoose III de Monstruos S.A","Jessie de Toy Story 3","Lightyear de Toy Story 3","Lotso de Toy Story 3","Luigi de cars","Marlin de Buscando a Nemo","Mate de cars","Mike Wazowski de Monstruos S.A","Mr. Increible de los increibles","Ramon de cars","Rayo de cars","Remy de Ratatoui","Rex de Toy Story 3","Russell de Up","Sally de cars","Sindrome de los increibles","Skinner de Ratatoui","Sr. Potato de Toy Story 3","Strip 'The King' Weathers de cars","Sully de Monstruos S.A","Violeta de los increibles","Wall-E de Wall-E","Woody de Toy Story 3","Nemo de Buscando a Nemo","Randall Boggs de Monstruos S.A"]
+
+    print(class_names[predicted_id[0]]) # Este es el valor que predice
+    lamda : ventanaFinal(class_names[predicted_id[0]])
+
+
+#Pregunta de si quiere predecir
+def confirmacion():
+    respuesta = messagebox.askquestion("Mensaje de confirmación", "¿Quieres predecir esa imagen?")
+    if respuesta == "yes":
+        predecir()
+
+    else: 
+        otraVentana() 
+
+#Ventana mostrando el pj y preguntando si ha acertado
+def ventanaFinal(nombrePj):
+    global imagenPersonaje
+
+    
+
+
+
+
+
+#Creacción de botones para las distintas ventanas
+def otraVentana():
+
+    global frame,botonSelección,botonPredecir
+
+    espacio = Label(root, text = "                ").grid(column=0)
+    
+
+    frame = LabelFrame(root, padx=370, pady=250)
+    frame.grid(row = 0, column= 1, columnspan= 5)
+
+    botonSelección = Button(frame, text ="Selecciona una imagen", command=open)
+    botonSelección.grid(row = 1, column=3)
+
+    textoInferior = Label(root, text="Selecciona una imagen en formato .jgp", font=("ComicSans", 20))
+    textoInferior.grid(row=2, column=3)
+
+    saltoLin=Label(root, text =" ").grid(row=3)
+
+    botonPredecir = Button(text="Predecir", width=50,state=DISABLED, command=confirmacion)
+    botonPredecir.grid(row=4, column=3)
 
 
 #VENTANA PRINCIPAL:
 def main_window():
      
-    
+    global root
     #Formato de ventana:
     splash_root.destroy()
     root = Tk()
@@ -73,24 +170,14 @@ def main_window():
     root.title("Trabajo SI")
     root.iconbitmap(current_directory+ "\data\logo\Icono.ico")
 
-    frame = LabelFrame(root, padx=410,pady=250)
-    frame.pack()
-
-    botonSelección = Button(frame, text ="Selecciona una imagen")
-    botonSelección.pack()
-
-    textoInferior = Label(root, text="Selecciona una imagen en formato .png", font=("Arial", 20))
-    textoInferior.pack()
-
-    botonPredecir = Button(text="Predecir", width=50)
-    botonPredecir.pack()
+    otraVentana()
     
     
 
 #LLamada a la ventana SPLASH
 
-cap = cv2.VideoCapture(logo_path)
-visualizar()
+#cap = cv2.VideoCapture(logo_path)
+#visualizar()
 
 progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF", bg="#2F6C60")
 progress_label.place(x=100,y=100)
