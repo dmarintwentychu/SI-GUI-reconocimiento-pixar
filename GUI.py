@@ -32,7 +32,7 @@ splash_root.title("Fary")
 
 splash_root.overrideredirect(1)
 
-logo_path =  current_directory + "\data\logo\Logo.mp4"
+logo_path =  os.getcwd() + "/data/logo/logo.mp4"
 
 splash_label = Label(splash_root)
 splash_label.pack()
