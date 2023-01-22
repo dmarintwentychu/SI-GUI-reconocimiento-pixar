@@ -73,6 +73,17 @@ def visualizar():
 
 #Funciones del main:
 
+def reescalarsi(dummy):
+
+    width, height = dummy.size
+    print(dummy.size)
+    if width >800:
+        dummy = dummy.resize((800,height))
+    if height > 400:
+        dummy = dummy.resize((height,400))
+    print(dummy.size)
+    return dummy
+
 #Abrir la foto que quieras para predecir
 def open():
     global actual_image, my_image_label #mainFrame
@@ -80,9 +91,11 @@ def open():
     #mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
 
     root.filename = filedialog.askopenfilename(initialdir=current_directory + "/Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
-    actual_image = ImageTk.PhotoImage(Image.open(root.filename))
+    dummy = Image.open(root.filename)
+    dummy = reescalarsi(dummy)
+    actual_image = ImageTk.PhotoImage(dummy)
     botonSeleccion.grid_forget()
-    my_image_label= Label(frame,image=actual_image)
+    my_image_label= Label(frame,image=actual_image,width=800,height=400)
     my_image_label.pack()
     botonPredecir.config(state=NORMAL)
         
@@ -98,12 +111,12 @@ def botonesPrincipal():
 
     except NameError:
            
-        frame = LabelFrame(root, padx=100, pady=100)
+        frame = LabelFrame(root,padx=10,pady=10)
         
-        botonSeleccion = Button(frame, text ="Selecciona una imagen", command=open)
+        botonSeleccion = Button(frame, text ="Selecciona una imagen", command=open,width=40,height=10)
         textoInferior = Label(root, text="Selecciona una imagen en formato .jgp", font=("ComicSans", 20))
-        botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion)
-        botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio)
+        botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion, pady=20)
+        botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio,pady=20,padx=13)
     
 
 def botonesFinal():
@@ -119,14 +132,17 @@ def botonesFinal():
 
         botonNo = Button(root, text="No", padx = 20, pady = 20, command=memes)
 
-        botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio)
-
+        botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio,pady=20)
 
 
 def inicio():
-    my_image_label.destroy()
-    botonPredecir.configure(state=DISABLED)
-    otraVentana()
+    try: 
+        my_image_label.destroy()
+        botonPredecir.configure(state=DISABLED)
+        otraVentana()
+    except NameError:
+        botonPredecir.configure(state=DISABLED)
+        otraVentana()
 
 def comparar(objeto):
     vivo = False
@@ -135,7 +151,6 @@ def comparar(objeto):
             vivo = True
 
     return vivo
-
 
 #predicción con tensorflow
 def predecir():
@@ -202,13 +217,13 @@ def ventanaFinal():
     
     botonesFinal()
 
-    textoFinal.place(x=500, y=400)
+    textoFinal.place(x=270, y=450)
 
-    botonSi.place(x=150, y=470)
+    botonSi.place(x=340, y=500)
 
-    botonNo.place(x=200, y=200)
+    botonNo.place(x=605, y=500)
 
-    botonInicio.place(x=300, y=300)
+    botonInicio.place(x=400, y=500)
 
     
 #Creacción de botones para las distintas ventanas
@@ -217,15 +232,16 @@ def otraVentana():
     botonesPrincipal()
 
     
-    frame.grid(row=0,column=0,columnspan=6)
+    frame.place(x=50,y=15,width=900, height=425)
+    frame.pack_propagate(0)
 
-    botonSeleccion.grid(row=2, column=2)
+    botonSeleccion.grid(row=2, column=2,padx=300,pady=130)
 
-    textoInferior.place(x=100, y=650)
+    textoInferior.place(x=270, y=450)
   
-    botonPredecir.place(x=100, y=350)
+    botonPredecir.place(x=500, y=500)
 
-    botonOtraPrediccion.place(x=100, y=100)
+    botonOtraPrediccion.place(x=300, y=500)
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
 def memes():
@@ -244,6 +260,9 @@ def main_window():
     root.geometry("1000x700")
     root.title("Trabajo SI")
     root.iconbitmap(current_directory+ "/data/logo/Icono.ico")
+    root.resizable(False, False) 
+
+
 
     otraVentana()
     
