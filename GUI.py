@@ -10,9 +10,11 @@ from tkinter import font
 from tkinter import ttk
 from tkinter.ttk import Progressbar
 from tkinter import messagebox
+from ttkthemes import ThemedTk
 import numpy as np
 
-current_directory = os.path.dirname(os.path.realpath(__file__))
+
+current_directory = os.getcwd()
 
 
 
@@ -34,10 +36,18 @@ splash_root.title("Fary")
 
 splash_root.overrideredirect(1)
 
-logo_path =  current_directory + "\data\logo\Logo.mp4"
+logo_path =  current_directory + "/data/logo/logo.mp4"
 
-splash_label = Label(splash_root)
-splash_label.pack()
+style = ttk.Style(splash_root)
+
+themepath = current_directory + "/data//theme/Azure-ttk-theme-main//azure dark 2//azure dark 3.tcl"
+print(themepath)
+splash_root.tk.call("source", themepath)
+style.theme_use('azure')
+
+
+splash_label = Label(splash_root, width=140, height=130)
+splash_label.place(x=240,y=30)
 
 #Función para ver el vídeo:
 def visualizar():
@@ -47,8 +57,16 @@ def visualizar():
         if ret == True:
             frame = imutils.resize(frame, width=640)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame = cv2.resize(frame, (260, 130)) 
+            nrows = 130
+            ncols = 260
+            row, col = np.ogrid[:nrows, :ncols]
+            cnt_row, cnt_col = nrows / 2, ncols / 2
+            outer_disk_mask = ((row - cnt_row)**2 + (col - cnt_col)**2 > (nrows / 2)**2)
+            frame[outer_disk_mask] = 51
             im = Image.fromarray(frame)
             img = ImageTk.PhotoImage(image=im)
+
             splash_label.configure(image=img)
             splash_label.image = img
             splash_label.after(10, visualizar)
@@ -61,7 +79,7 @@ def open():
     
     #mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
 
-    root.filename = filedialog.askopenfilename(initialdir=current_directory + "\Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
+    root.filename = filedialog.askopenfilename(initialdir=current_directory + "/Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
     actual_image = ImageTk.PhotoImage(Image.open(root.filename))
     botonSeleccion.grid_forget()
     my_image_label= Label(frame,image=actual_image)
@@ -128,9 +146,9 @@ def predecir():
 
 
     current_directory = os.path.dirname(os.path.realpath(__file__))
-    model = tf.keras.models.load_model((current_directory + "\Model\model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+    model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
 
-    model.summary()
+    #model.summary()
 
 
     image = PIL.Image.open(root.filename)
@@ -159,7 +177,7 @@ def predecir():
     predicted_id = tf.math.argmax(predicted_batch, axis=-1)
     predicted_id = predicted_id.numpy() #Sepasa a numpy porque el formato es raro (tuple)
 
-    print(predicted_id) #Número correspondiente al personaje predicho
+    #print(predicted_id) #Número correspondiente al personaje predicho
 
     #Esta es la lista para convertir el número predicho en su correspondiente label
     class_names = ["Alfredo Linguini de Ratatoui","Boo de Monstruos S.A","Capitan B. McCrea de Wall-E","Carl Fredricksen de Up","Charles Muntz de Up","Chick Hicks de cars","Dash de los increibles","Doc Huston de cars","Dori de Buscando a Nemo","Edna de los increibles","Elastic girl de los increibles","Eva de Wall-E","Flo de cars","Frozono de los increibles","Gill de Buscando a Nemo","Guido de cars","Henry J. Waternoose III de Monstruos S.A","Jessie de Toy Story 3","Lightyear de Toy Story 3","Lotso de Toy Story 3","Luigi de cars","Marlin de Buscando a Nemo","Mate de cars","Mike Wazowski de Monstruos S.A","Mr. Increible de los increibles","Ramon de cars","Rayo de cars","Remy de Ratatoui","Rex de Toy Story 3","Russell de Up","Sally de cars","Sindrome de los increibles","Skinner de Ratatoui","Sr. Potato de Toy Story 3","Strip 'The King' Weathers de cars","Sully de Monstruos S.A","Violeta de los increibles","Wall-E de Wall-E","Woody de Toy Story 3","Nemo de Buscando a Nemo","Randall Boggs de Monstruos S.A"]
@@ -220,11 +238,12 @@ def main_window():
      
     global root
     #Formato de ventana:
+    splash_label.destroy()
     splash_root.destroy()
     root = Tk()
     root.geometry("1000x700")
     root.title("Trabajo SI")
-    root.iconbitmap(current_directory+ "\data\logo\Icono.ico")
+    root.iconbitmap(current_directory+ "/data/logo/Icono.ico")
 
     otraVentana()
     
@@ -232,17 +251,15 @@ def main_window():
 
 #LLamada a la ventana SPLASH
 
-#cap = cv2.VideoCapture(logo_path)
-#visualizar()
+cap = cv2.VideoCapture(logo_path)
+visualizar()
 
-progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF", bg="#2F6C60")
-progress_label.place(x=100,y=100)
 
-progress = ttk.Style()
-progress.theme_use("clam") #el theme se puede cambiar esto es una prueba
-progress.configure("red.Horizontal.TProgressbar", background = "#108cff")
+progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF")
+progress_label.place(x=300,y=190)
 
-progress = Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate" , style ="red.Horizontal.TProgressbar")
+
+progress = Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate")
 progress.place(x=125,y=225)
 
 i = 0
@@ -254,31 +271,31 @@ def load():
         import tensorflow as tf
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
-        progress_label.after(100,load)
+        progress_label.after(600,load)
         progress["value"] = 10*i
         i+=2
     elif i == 6:
         import tensorflow_hub as hub
-        model = tf.keras.models.load_model((current_directory + "\Model\model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
-        progress_label.after(200,load)
+        progress_label.after(600,load)
         progress["value"] = 10*i
         i+=1
     elif i == 8:
         from tensorflow import keras
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
-        progress_label.after(200,load)
+        progress_label.after(600,load)
         progress["value"] = 10*i
         i+=1
     elif i<=10:
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
-        progress_label.after(600,load)
+        progress_label.after(100,load)
         progress["value"] = 10*i
         i+= 1
-    else : splash_root.after(100,main_window)   
+    else : splash_root.after(600,main_window)   
 
 
 load()
