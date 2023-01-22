@@ -63,16 +63,67 @@ def open():
 
     root.filename = filedialog.askopenfilename(initialdir=current_directory + "\Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
     actual_image = ImageTk.PhotoImage(Image.open(root.filename))
-    botonSelección.destroy()
-    frame.config(padx=100,pady=100)
-    my_image_label= Label(frame,image=actual_image).grid()
+    botonSeleccion.grid_forget()
+    my_image_label= Label(frame,image=actual_image)
+    my_image_label.pack()
     botonPredecir.config(state=NORMAL)
         
+def botonesPrincipal():
+    global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
+
+    try:
+        if comparar(textoFinal):
+            textoFinal.place_forget()
+            botonSi.place_forget()
+            botonNo.place_forget()
+            botonInicio.place_forget()
+
+    except NameError:
+           
+        frame = LabelFrame(root, padx=100, pady=100)
+        
+        botonSeleccion = Button(frame, text ="Selecciona una imagen", command=open)
+        textoInferior = Label(root, text="Selecciona una imagen en formato .jgp", font=("ComicSans", 20))
+        botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion)
+        botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio)
+    
+
+def botonesFinal():
+    global textoFinal,botonInicio,botonSi,botonNo
+
+    if comparar(textoInferior):
+        textoInferior.place_forget()
+        botonOtraPrediccion.place_forget()
+        botonPredecir.place_forget()    
+        textoFinal= Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
+
+        botonSi = Button(root, text="Si", padx = 20, pady = 20, command=memes)
+
+        botonNo = Button(root, text="No", padx = 20, pady = 20, command=memes)
+
+        botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio)
+
+
+
+def inicio():
+    my_image_label.destroy()
+    botonPredecir.configure(state=DISABLED)
+    otraVentana()
+
+def comparar(objeto):
+    vivo = False
+    for obj in root.winfo_children():
+        if isinstance(obj, type(objeto)):
+            vivo = True
+
+    return vivo
+
 
 #predicción con tensorflow
 def predecir():
 
-    
+    global nombrePj
+
     tf.keras.backend.clear_session()  # Para restablecer fácilmente el estado del portátil. No necesario o si ni idea jiji
 
 
@@ -115,8 +166,8 @@ def predecir():
 
     #print(class_names[predicted_id[0]]) # Este es el valor que predice
     #Llamamos a la ventana final que pone el personaje y la predicción
-    ventanaFinal(class_names[predicted_id[0]])
-
+    nombrePj = class_names[predicted_id[0]]
+    ventanaFinal()
 
 #Pregunta de si quiere predecir
 def confirmacion():
@@ -125,40 +176,43 @@ def confirmacion():
         predecir()
 
     else: 
-        otraVentana() 
+        inicio() 
+
 
 #Ventana mostrando el pj y preguntando si ha acertado
-def ventanaFinal(nombrePj):
-    global imagenPersonaje
-    print(nombrePj)
+def ventanaFinal():
+    
+    botonesFinal()
+
+    textoFinal.place(x=500, y=400)
+
+    botonSi.place(x=150, y=470)
+
+    botonNo.place(x=200, y=200)
+
+    botonInicio.place(x=300, y=300)
 
     
-
-
-
-
-
 #Creacción de botones para las distintas ventanas
 def otraVentana():
 
-    global frame,botonSelección,botonPredecir
+    botonesPrincipal()
 
-    espacio = Label(root, text = "                ").grid(column=0)
     
+    frame.grid(row=0,column=0,columnspan=6)
 
-    frame = LabelFrame(root, padx=370, pady=250)
-    frame.grid(row = 0, column= 1, columnspan= 5)
+    botonSeleccion.grid(row=2, column=2)
 
-    botonSelección = Button(frame, text ="Selecciona una imagen", command=open)
-    botonSelección.grid(row = 1, column=3)
+    textoInferior.place(x=100, y=650)
+  
+    botonPredecir.place(x=100, y=350)
 
-    textoInferior = Label(root, text="Selecciona una imagen en formato .jgp", font=("ComicSans", 20))
-    textoInferior.grid(row=2, column=3)
+    botonOtraPrediccion.place(x=100, y=100)
 
-    saltoLin=Label(root, text =" ").grid(row=3)
+#Generador de memesfelices o tristes cuando clicke en si o en No
+def memes():
+    print("MEMEs")
 
-    botonPredecir = Button(text="Predecir", width=50,state=DISABLED, command=confirmacion)
-    botonPredecir.grid(row=4, column=3)
 
 
 #VENTANA PRINCIPAL:
