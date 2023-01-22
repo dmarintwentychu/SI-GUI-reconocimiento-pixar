@@ -23,6 +23,7 @@ splash_root.overrideredirect(1)
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 logo_path =  current_directory + "\data\logo\Logo.mp4"
+icon_path =  current_directory + "\data\logo\Icono.ico"
 
 splash_label = Label(splash_root)
 splash_label.pack()
@@ -59,12 +60,22 @@ def main_window(): #Aqui empieza la ventana principal:
     root = Tk()
 
     root.geometry("1000x700")
-    root.title("Fary")
-    #root.iconbitmap()
+    root.title("Trabajo SI")
+    root.iconbitmap(icon_path)
+
+    frame = LabelFrame(root, padx=410,pady=250)
+    frame.pack()
+
+    botonSelección = Button(frame, text ="Selecciona una imagen")
+    botonSelección.pack()
+
+    textoInferior = Label(root, text="Selecciona una imagen en formato .png", font=("Arial", 20))
+    textoInferior.pack()
+
+
     
 cap = cv2.VideoCapture(logo_path)
 visualizar()
 splash_root.after(4000,main_window)   
 
 mainloop()
-##Prueba Alberto
