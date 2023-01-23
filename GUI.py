@@ -76,7 +76,7 @@ def visualizar():
 
 def reescalarsi(dummy):
 
-    global width
+    global height
     width, height = dummy.size
     if width >800:
         dummy = dummy.resize((800,height))
@@ -97,8 +97,7 @@ def open():
     actual_image = ImageTk.PhotoImage(dummy)
     botonSeleccion.grid_forget()
     my_image_label= ttk.Label(frame,image=actual_image,width=800)
-    my_image_label.pack(pady=80*((800-width)/2)/width)
-
+    my_image_label.pack(pady=199-(height/2))
 
     botonPredecir.config(state=NORMAL,style="Accent.TButton")
 
