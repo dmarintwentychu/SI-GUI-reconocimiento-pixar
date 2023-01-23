@@ -119,7 +119,6 @@ def botonesPrincipal():
         textoInferior = Label(root, text="Selecciona una imagen en formato .jpg", font=("ComicSans", 20))
         botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion, pady=20)
         botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio,pady=20,padx=13)
-a
 
         
 
