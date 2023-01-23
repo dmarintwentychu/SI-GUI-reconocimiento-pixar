@@ -136,9 +136,9 @@ def botonesFinal():
         botonPredecir.place_forget()    
         textoFinal= ttk.Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
 
-        botonSi = ttk.Button(root, text="Si", command=lambda: memes(1))
+        botonSi = ttk.Button(root, text="Si", padx = 41, pady = 20, command=lambda: memes(1))
 
-        botonNo = ttk.Button(root, text="No", command=lambda: memes(0))
+        botonNo = ttk.Button(root, text="No", padx = 40, pady = 20, command=lambda: memes(0))
 
         botonInicio = ttk.Button(root,text="Volver a predecir otra imagen", command=inicio)
 
@@ -224,7 +224,7 @@ def ventanaFinal():
 
     botonSi.place(x=400, y=500)
 
-    botonNo.place(x=499, y=500)
+    botonNo.place(x=508, y=500)
 
     botonInicio.place(x=400, y=563)
 
@@ -242,7 +242,7 @@ def otraVentana():
 
     textoInferior.place(x=270, y=450)
   
-    botonPredecir.place(x=500, y=500)
+    botonPredecir.place(x=506, y=500)
 
     botonOtraPrediccion.place(x=300, y=500)
 
