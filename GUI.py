@@ -245,7 +245,6 @@ def main_window():
      
     global root
     #Formato de ventana:
-    splash_label.destroy()
     splash_root.destroy()
     root = Tk()
     root.geometry("1000x700")
@@ -268,10 +267,14 @@ progress_label.place(x=300,y=190)
 progress = Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate")
 progress.place(x=125,y=225)
 
+def load_model():
+    global model
+    model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+
 i = 0
 def load():
 
-    global i, tf,keras, hub,model
+    global i, tf,keras, hub
 
     if i==2:
         import tensorflow as tf
@@ -281,15 +284,15 @@ def load():
         progress["value"] = 10*i
         i+=2
     elif i == 6:
+        from tensorflow import keras
         import tensorflow_hub as hub
-        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
         progress["value"] = 10*i
         i+=1
     elif i == 8:
-        from tensorflow import keras
+        threading.Thread(target=load_model).start()
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
@@ -305,10 +308,9 @@ def load():
 
 
 cap = cv2.VideoCapture(logo_path)
-t1 = threading.Thread(target=visualizar).start()
 
+threading.Thread(target = visualizar).start()
 load()
-
 
 
 mainloop()
