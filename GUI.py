@@ -125,7 +125,7 @@ def botonesPrincipal():
 
 #Creacción de botones de la ventana final y ocultación de botones de la ventana principal
 def botonesFinal():
-    global textoFinal,botonInicio,botonSi,botonNo
+    global textoFinal,botonInicio,botonSi,botonNo,pixelArt
 
     if comparar(textoInferior):
         textoInferior.place_forget()
@@ -136,6 +136,10 @@ def botonesFinal():
         botonSi = Button(root, text="Si", padx = 30, pady = 20, command=memes)
 
         botonNo = Button(root, text="No", padx = 30, pady = 20, command=memes)
+
+        pixelArt=Image.open(current_directory+"/data/pixelArts/"+ nombrePj)
+        
+        pixelArt = Label(root, image=pixelArt)
 
         botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio,pady=20)
 
@@ -224,6 +228,8 @@ def ventanaFinal():
     botonNo.place(x=519, y=500)
 
     botonInicio.place(x=400, y=563)
+
+    pixelArt.place(x=460,y=500)
 
     
 #Creacción de botones para las distintas ventanas
