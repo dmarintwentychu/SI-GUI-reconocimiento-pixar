@@ -249,7 +249,7 @@ def otraVentana():
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
 def memes(respuesta):
-    global top,topLabelIF,imagen
+    global top,topLabelIF,imagenF,imagenT
 
     top=Toplevel()    
     top.geometry("500x350")
@@ -265,8 +265,9 @@ def memes(respuesta):
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
-            imagen = ImageTk.PhotoImage(dummy)
-            topLabelIF= ttk.Label(top,image=imagen).pack()
+            dummy = dummy.resize((500,350))
+            imagenF = ImageTk.PhotoImage(dummy)
+            topLabelIF= ttk.Label(top,image=imagenF).pack()
             top.after(2000, habilitarBtn)
         else :
             print("Meme en Gif")
@@ -281,7 +282,10 @@ def memes(respuesta):
             print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
-            
+            dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
+            dummy = dummy.resize((500,350))
+            imagenT = ImageTk.PhotoImage(dummy)
+            topLabelIF= ttk.Label(top,image=imagenT).pack()
             top.after(2000, habilitarBtn)
         else :
             print("Meme en Gif")
@@ -337,22 +341,22 @@ def load():
     global i, tf,keras, hub,model,fin
 
     if i==2:
-        #import tensorflow as tf
+        import tensorflow as tf
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
         progress["value"] = 10*i
         i+=2
     elif i == 6:
-        #from tensorflow import keras
-        #import tensorflow_hub as hub
+        from tensorflow import keras
+        import tensorflow_hub as hub
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
         progress["value"] = 10*i
         i+=1
     elif i == 8:
-        #model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
