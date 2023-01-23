@@ -118,7 +118,7 @@ def botonesPrincipal():
         botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion, pady=20)
         botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio,pady=20,padx=13)
     
-    
+
 #Creacción de botones de la ventana final y ocultación de botones de la ventana principal
 def botonesFinal():
     global textoFinal,botonInicio,botonSi,botonNo
@@ -129,9 +129,9 @@ def botonesFinal():
         botonPredecir.place_forget()    
         textoFinal= Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
 
-        botonSi = Button(root, text="Si", padx = 20, pady = 20, command=memes)
+        botonSi = Button(root, text="Si", padx = 30, pady = 20, command=memes)
 
-        botonNo = Button(root, text="No", padx = 20, pady = 20, command=memes)
+        botonNo = Button(root, text="No", padx = 30, pady = 20, command=memes)
 
         botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio,pady=20)
 
@@ -214,11 +214,11 @@ def ventanaFinal():
 
     textoFinal.place(x=270, y=450)
 
-    botonSi.place(x=340, y=500)
+    botonSi.place(x=400, y=500)
 
-    botonNo.place(x=605, y=500)
+    botonNo.place(x=519, y=500)
 
-    botonInicio.place(x=400, y=500)
+    botonInicio.place(x=400, y=563)
 
     
 #Creacción de botones para las distintas ventanas
