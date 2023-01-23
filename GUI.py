@@ -13,6 +13,7 @@ from tkinter import messagebox
 from ttkthemes import ThemedTk
 import numpy as np
 import threading
+from io import BytesIO
 
 current_directory = os.getcwd()
 
@@ -115,10 +116,10 @@ def botonesPrincipal():
         frame = LabelFrame(root,padx=10,pady=10)
         
         botonSeleccion = Button(frame, text ="Selecciona una imagen", command=open,width=40,height=10)
-        textoInferior = Label(root, text="Selecciona una imagen en formato .jgp", font=("ComicSans", 20))
+        textoInferior = Label(root, text="Selecciona una imagen en formato .jpg", font=("ComicSans", 20))
         botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion, pady=20)
         botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio,pady=20,padx=13)
-
+a
 
         
 
