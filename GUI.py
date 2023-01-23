@@ -125,7 +125,7 @@ def botonesPrincipal():
 
 #Creacción de botones de la ventana final y ocultación de botones de la ventana principal
 def botonesFinal():
-    global textoFinal,botonInicio,botonSi,botonNo,pixelArt
+    global textoFinal,botonInicio,botonSi,botonNo
 
     if comparar(textoInferior):
         textoInferior.place_forget()
@@ -133,13 +133,9 @@ def botonesFinal():
         botonPredecir.place_forget()    
         textoFinal= Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
 
-        botonSi = Button(root, text="Si", padx = 30, pady = 20, command=memes)
+        botonSi = Button(root, text="Si", padx = 41, pady = 20, command=lambda: memes(1))
 
-        botonNo = Button(root, text="No", padx = 30, pady = 20, command=memes)
-
-        pixelArt=Image.open(current_directory+"/data/pixelArts/"+ nombrePj)
-        
-        pixelArt = Label(root, image=pixelArt)
+        botonNo = Button(root, text="No", padx = 40, pady = 20, command=lambda: memes(0))
 
         botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio,pady=20)
 
@@ -225,11 +221,9 @@ def ventanaFinal():
 
     botonSi.place(x=400, y=500)
 
-    botonNo.place(x=519, y=500)
+    botonNo.place(x=499, y=500)
 
     botonInicio.place(x=400, y=563)
-
-    pixelArt.place(x=460,y=500)
 
     
 #Creacción de botones para las distintas ventanas
@@ -250,8 +244,18 @@ def otraVentana():
     botonOtraPrediccion.place(x=300, y=500)
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
-def memes():
-    print("MEMEs")
+def memes(respuesta):
+
+    top=Toplevel()    
+    top.geometry("500x350")
+    top.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
+
+    if respuesta==1:
+        top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
+    
+    else :
+        top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
+
 
 
 
@@ -266,7 +270,7 @@ def main_window():
     root = Tk()
     root.geometry("1000x700")
     root.title("Trabajo SI")
-    root.iconbitmap(current_directory+ "/data/logo/Icono.ico")
+    root.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
     root.resizable(False, False) 
 
 
