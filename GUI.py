@@ -269,7 +269,7 @@ def memes(respuesta):
         else :
             print("Meme en Gif")
 
-
+#carpetas nuevas
 
 #VENTANA PRINCIPAL:
 def main_window():
