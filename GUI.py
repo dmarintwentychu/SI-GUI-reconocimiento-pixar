@@ -41,7 +41,8 @@ logo_path =  current_directory + "/data/logo/logo.mp4"
 
 #style = ttk.Style(splash_root)
 
-themepath = current_directory +  "\data\\theme\\azure_ttk2-main\\azure.tcl"
+themepath = current_directory +  '\data\\theme\Azure-ttk-theme-gif-based\\azure.tcl'
+splash_style = ttk.Style(splash_root)
 splash_root.tk.call("source", themepath)
 splash_root.tk.call("set_theme", "dark")
 
@@ -87,7 +88,7 @@ def reescalarsi(dummy):
 #Abrir la foto que quieras para predecir
 def open():
     global actual_image, my_image_label #mainFrame
-    root.tk.call("set_theme", "dark")
+
     #mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
 
     root.filename = filedialog.askopenfilename(initialdir=current_directory + "/Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
@@ -98,13 +99,12 @@ def open():
     my_image_label= ttk.Label(frame,image=actual_image,width=800)
     my_image_label.pack()
 
-    botonPredecir.config(state=NORMAL)
+    botonPredecir.config(state=NORMAL,style="Accent.TButton")
 
 #Creacción de botones de la ventana principal y ocultación de botones de la ventana final             
 def botonesPrincipal():
     global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
 
-    root.tk.call("set_theme", "dark")
 
     try:
         if comparar(textoFinal):
@@ -117,10 +117,10 @@ def botonesPrincipal():
            
         frame = ttk.LabelFrame(root, text="")
         
-        botonSeleccion = ttk.Button(frame, text ="Selecciona una imagen", command=open,width=40)
+        botonSeleccion = ttk.Button(frame, text ="Selecciona una imagen",style="Accent.TButton", command=open,width=40)
         textoInferior = ttk.Label(root, text="Selecciona una imagen en formato .jpg", font=("ComicSans", 20))
         botonPredecir = ttk.Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion)
-        botonOtraPrediccion = ttk.Button(root, text="Elegir otra imagen para predecir", command=inicio)
+        botonOtraPrediccion = ttk.Button(root,style="Accent.TButton", text="Elegir otra imagen para predecir", command=inicio)
 
         
 
@@ -136,20 +136,20 @@ def botonesFinal():
         botonPredecir.place_forget()    
         textoFinal= ttk.Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
 
-        botonSi = ttk.Button(root, text="Si", padx = 41, pady = 20, command=lambda: memes(1))
+        botonSi = ttk.Button(root, text="Si",style="Accent.TButton",command=lambda: memes(1))
 
-        botonNo = ttk.Button(root, text="No", padx = 40, pady = 20, command=lambda: memes(0))
+        botonNo = ttk.Button(root, text="No",style="Accent.TButton", command=lambda: memes(0))
 
-        botonInicio = ttk.Button(root,text="Volver a predecir otra imagen", command=inicio)
+        botonInicio = ttk.Button(root,text="Volver a predecir otra imagen",style="Accent.TButton", command=inicio)
 
 #Te lleva de vuelta a la ventana inicial
 def inicio():
     try: 
         my_image_label.destroy()
-        botonPredecir.configure(state=DISABLED)
+        botonPredecir.configure(state=DISABLED,style ="TButton")
         otraVentana()
     except NameError:
-        botonPredecir.configure(state=DISABLED)
+        botonPredecir.configure(state=DISABLED,style ="TButton")
         otraVentana()
 
 #Revisa que el objeto que le pases por parámetro existe
@@ -238,7 +238,7 @@ def otraVentana():
     frame.place(x=50,y=15,width=900, height=425)
     frame.pack_propagate(0)
 
-    botonSeleccion.grid(row=2, column=2,padx=300,pady=130)
+    botonSeleccion.grid(row=2, column=2,padx=300,pady=180)
 
     textoInferior.place(x=270, y=450)
   
@@ -276,9 +276,8 @@ def main_window():
     root.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
     root.resizable(False, False) 
 
-    root.tk.call("source", current_directory +  "\data\\theme\\azure_ttk2-main\\azure.tcl")
+    root.tk.call("source", themepath)
     root.tk.call("set_theme", "dark")
-    root.update()
 
 
     otraVentana()
