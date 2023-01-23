@@ -97,7 +97,8 @@ def open():
     my_image_label.pack()
 
     botonPredecir.config(state=NORMAL)
-
+    
+#Creacción de botones de la ventana principal y ocultación de botones de la ventana final             
 def botonesPrincipal():
     global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
 
@@ -121,6 +122,7 @@ def botonesPrincipal():
         
 
 
+#Creacción de botones de la ventana final y ocultación de botones de la ventana principal
 def botonesFinal():
     global textoFinal,botonInicio,botonSi,botonNo
 
@@ -130,13 +132,13 @@ def botonesFinal():
         botonPredecir.place_forget()    
         textoFinal= Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
 
-        botonSi = Button(root, text="Si", padx = 20, pady = 20, command=memes)
+        botonSi = Button(root, text="Si", padx = 30, pady = 20, command=memes)
 
-        botonNo = Button(root, text="No", padx = 20, pady = 20, command=memes)
+        botonNo = Button(root, text="No", padx = 30, pady = 20, command=memes)
 
         botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio,pady=20)
 
-
+#Te lleva de vuelta a la ventana inicial
 def inicio():
     try: 
         my_image_label.destroy()
@@ -146,6 +148,7 @@ def inicio():
         botonPredecir.configure(state=DISABLED)
         otraVentana()
 
+#Revisa que el objeto que le pases por parámetro existe
 def comparar(objeto):
     vivo = False
     for obj in root.winfo_children():
@@ -215,11 +218,11 @@ def ventanaFinal():
 
     textoFinal.place(x=270, y=450)
 
-    botonSi.place(x=340, y=500)
+    botonSi.place(x=400, y=500)
 
-    botonNo.place(x=605, y=500)
+    botonNo.place(x=519, y=500)
 
-    botonInicio.place(x=400, y=500)
+    botonInicio.place(x=400, y=563)
 
     
 #Creacción de botones para las distintas ventanas
