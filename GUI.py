@@ -248,27 +248,52 @@ def otraVentana():
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
 def memes(respuesta):
+    global top,topLabelIF,imagen
 
     top=Toplevel()    
     top.geometry("500x350")
     top.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
     imgGif = random.randint(1,2)
+    botonSi.config(state=DISABLED,style ="TButton")
+    botonNo.config(state=DISABLED,style ="TButton")
 
     if respuesta==1:
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
         if imgGif == 1:
             print("Meme en Imagen")
+            listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
+            meme = random.randint(1,len(listaArchivos))
+            dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
+            imagen = ImageTk.PhotoImage(dummy)
+            topLabelIF= ttk.Label(top,image=imagen).pack()
+            top.after(2000, habilitarBtn)
         else :
             print("Meme en Gif")
+            listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
+            meme = random.randint(1,len(listaArchivos))
+            
+            top.after(2000, habilitarBtn)
 
     else :
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
         if imgGif == 1:
             print("Meme en Imagen")
+            listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
+            meme = random.randint(1,len(listaArchivos))
+            
+            top.after(2000, habilitarBtn)
         else :
             print("Meme en Gif")
+            listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
+            meme = random.randint(1,len(listaArchivos))
+            
+            top.after(2000, habilitarBtn)
 
-#carpetas nuevas
+#Cerrar ventana y habilitar botones :)
+def habilitarBtn():
+    top.destroy()
+    botonSi.config(state=NORMAL,style="Accent.TButton")
+    botonNo.config(state=NORMAL,style="Accent.TButton")
 
 #VENTANA PRINCIPAL:
 def main_window():
