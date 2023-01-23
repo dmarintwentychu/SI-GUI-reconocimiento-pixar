@@ -62,8 +62,7 @@ si quieres abrir conda base = source ~/miniforge3/bin/activate
 para activar el enviroment de tensorflow = conda activate tensorflow (si no te sabes el nombre del enviroment haz conda info-envs)
 
 
-
- 
+si abres con vscode el interprete te tiene que quedar un tal que asi ( python 3.8.15 ⁓/miniforge3/envs/tensorflow/bin/python )
 
 
 
