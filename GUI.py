@@ -45,6 +45,7 @@ themepath = current_directory +  "\data\\theme\\azure_ttk2-main\\azure.tcl"
 splash_root.tk.call("source", themepath)
 splash_root.tk.call("set_theme", "dark")
 
+splash_root.update()
 
 splash_label = Label(splash_root, width=140, height=130)
 splash_label.place(x=240,y=30)
@@ -86,7 +87,7 @@ def reescalarsi(dummy):
 #Abrir la foto que quieras para predecir
 def open():
     global actual_image, my_image_label #mainFrame
-    
+    root.tk.call("set_theme", "dark")
     #mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
 
     root.filename = filedialog.askopenfilename(initialdir=current_directory + "/Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
@@ -94,7 +95,7 @@ def open():
     dummy = reescalarsi(dummy)
     actual_image = ImageTk.PhotoImage(dummy)
     botonSeleccion.grid_forget()
-    my_image_label= Label(frame,image=actual_image,width=800,height=400)
+    my_image_label= ttk.Label(frame,image=actual_image,width=800)
     my_image_label.pack()
 
     botonPredecir.config(state=NORMAL)
@@ -102,6 +103,8 @@ def open():
 #Creacción de botones de la ventana principal y ocultación de botones de la ventana final             
 def botonesPrincipal():
     global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
+
+    root.tk.call("set_theme", "dark")
 
     try:
         if comparar(textoFinal):
@@ -112,12 +115,12 @@ def botonesPrincipal():
 
     except NameError:
            
-        frame = LabelFrame(root,padx=10,pady=10)
+        frame = ttk.LabelFrame(root, text="")
         
-        botonSeleccion = Button(frame, text ="Selecciona una imagen", command=open,width=40,height=10)
-        textoInferior = Label(root, text="Selecciona una imagen en formato .jpg", font=("ComicSans", 20))
-        botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion, pady=20)
-        botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio,pady=20,padx=13)
+        botonSeleccion = ttk.Button(frame, text ="Selecciona una imagen", command=open,width=40)
+        textoInferior = ttk.Label(root, text="Selecciona una imagen en formato .jpg", font=("ComicSans", 20))
+        botonPredecir = ttk.Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion)
+        botonOtraPrediccion = ttk.Button(root, text="Elegir otra imagen para predecir", command=inicio)
 
         
 
@@ -126,17 +129,18 @@ def botonesPrincipal():
 def botonesFinal():
     global textoFinal,botonInicio,botonSi,botonNo
 
+
     if comparar(textoInferior):
         textoInferior.place_forget()
         botonOtraPrediccion.place_forget()
         botonPredecir.place_forget()    
-        textoFinal= Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
+        textoFinal= ttk.Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
 
-        botonSi = Button(root, text="Si", padx = 41, pady = 20, command=lambda: memes(1))
+        botonSi = ttk.Button(root, text="Si", command=lambda: memes(1))
 
-        botonNo = Button(root, text="No", padx = 40, pady = 20, command=lambda: memes(0))
+        botonNo = ttk.Button(root, text="No", command=lambda: memes(0))
 
-        botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio,pady=20)
+        botonInicio = ttk.Button(root,text="Volver a predecir otra imagen", command=inicio)
 
 #Te lleva de vuelta a la ventana inicial
 def inicio():
@@ -263,8 +267,8 @@ def main_window():
      
     global root
     #Formato de ventana:
-    #fin = True
-    #t1.join()
+   
+
     splash_root.destroy()
     root = Tk()
     root.geometry("1000x700")
@@ -274,11 +278,10 @@ def main_window():
 
     root.tk.call("source", current_directory +  "\data\\theme\\azure_ttk2-main\\azure.tcl")
     root.tk.call("set_theme", "dark")
-    
+    root.update()
+
 
     otraVentana()
-    
-    
 
 #LLamada a la ventana SPLASH
 
@@ -286,9 +289,8 @@ progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"),
 progress_label.place(x=300,y=190)
 
 
-progress = Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate")
+progress = ttk.Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate")
 progress.place(x=125,y=225)
-
 
 i = 0
 def load():
@@ -326,7 +328,7 @@ def load():
         
     else : 
         fin = True
-        splash_root.after(600,main_window)   
+        splash_root.after(600,main_window)
 
 
 cap = cv2.VideoCapture(logo_path)

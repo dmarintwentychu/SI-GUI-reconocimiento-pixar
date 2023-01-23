@@ -51,7 +51,8 @@ if __name__ == "__main__":
     root.title("Azure dark theme")
 
     # Simply set the theme
-    root.tk.call("source", "azure.tcl")
+    import os
+    root.tk.call("source", os.getcwd() + "\data\\theme\\azure_ttk2-main\\azure.tcl")
     root.tk.call("set_theme", "dark")
 
     app = App(root)

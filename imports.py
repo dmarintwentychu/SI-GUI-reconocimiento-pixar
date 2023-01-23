@@ -14,5 +14,6 @@ install("tensorflow_hub")
 install("pyyaml")
 install("h5py")
 install("ttkthemes")
+
 #subprocess.check_call([sys.executable, "-m", "pip", "install","tensorflow","==","2.9.2"]) 
 #si no os funciona me avisais || Tiene que ser esta versión o si no no es compatible (creo ni idea me quiero pegar un tiro en el escroto)
