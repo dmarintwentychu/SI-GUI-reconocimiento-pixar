@@ -14,6 +14,7 @@ from ttkthemes import ThemedTk
 import numpy as np
 import threading
 from io import BytesIO
+import random
 
 current_directory = os.getcwd()
 
@@ -224,9 +225,9 @@ def ventanaFinal():
 
     botonSi.place(x=400, y=500)
 
-    botonNo.place(x=508, y=500)
+    botonNo.place(x=506, y=500)
 
-    botonInicio.place(x=400, y=563)
+    botonInicio.place(x=400, y=540)
 
     
 #Creacción de botones para las distintas ventanas
@@ -242,9 +243,9 @@ def otraVentana():
 
     textoInferior.place(x=270, y=450)
   
-    botonPredecir.place(x=506, y=500)
+    botonPredecir.place(x=500, y=500)
 
-    botonOtraPrediccion.place(x=300, y=500)
+    botonOtraPrediccion.place(x=280, y=500)
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
 def memes(respuesta):
@@ -252,13 +253,21 @@ def memes(respuesta):
     top=Toplevel()    
     top.geometry("500x350")
     top.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
+    imgGif = random.randint(1,2)
 
     if respuesta==1:
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
-    
+        if imgGif == 1:
+            print("Meme en Imagen")
+        else :
+            print("Meme en Gif")
+
     else :
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
-
+        if imgGif == 1:
+            print("Meme en Imagen")
+        else :
+            print("Meme en Gif")
 
 
 
