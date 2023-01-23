@@ -95,8 +95,9 @@ def open():
     botonSeleccion.grid_forget()
     my_image_label= Label(frame,image=actual_image,width=800,height=400)
     my_image_label.pack()
+
     botonPredecir.config(state=NORMAL)
-        
+
 def botonesPrincipal():
     global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
 
@@ -115,7 +116,10 @@ def botonesPrincipal():
         textoInferior = Label(root, text="Selecciona una imagen en formato .jgp", font=("ComicSans", 20))
         botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion, pady=20)
         botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio,pady=20,padx=13)
-    
+
+
+        
+
 
 def botonesFinal():
     global textoFinal,botonInicio,botonSi,botonNo
@@ -154,6 +158,7 @@ def comparar(objeto):
 def predecir():
 
     global nombrePj
+    
 
     tf.keras.backend.clear_session()  # Para restablecer fácilmente el estado del portátil. No necesario o si ni idea jiji
 
@@ -267,14 +272,11 @@ progress_label.place(x=300,y=190)
 progress = Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate")
 progress.place(x=125,y=225)
 
-def load_model():
-    global model
-    model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
 
 i = 0
 def load():
 
-    global i, tf,keras, hub
+    global i, tf,keras, hub,model
 
     if i==2:
         import tensorflow as tf
@@ -292,7 +294,7 @@ def load():
         progress["value"] = 10*i
         i+=1
     elif i == 8:
-        threading.Thread(target=load_model).start()
+        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
@@ -301,7 +303,7 @@ def load():
     elif i<=10:
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
-        progress_label.after(100,load)
+        progress_label.after(400,load)
         progress["value"] = 10*i
         i+= 1
     else : splash_root.after(600,main_window)   
