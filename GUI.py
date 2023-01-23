@@ -96,7 +96,9 @@ def open():
     my_image_label= Label(frame,image=actual_image,width=800,height=400)
     my_image_label.pack()
     botonPredecir.config(state=NORMAL)
-        
+
+
+#Creacción de botones de la ventana principal y ocultación de botones de la ventana final     
 def botonesPrincipal():
     global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
 
@@ -116,7 +118,8 @@ def botonesPrincipal():
         botonPredecir = Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion, pady=20)
         botonOtraPrediccion = Button(root, text="Elegir otra imagen para predecir", command=inicio,pady=20,padx=13)
     
-
+    
+#Creacción de botones de la ventana final y ocultación de botones de la ventana principal
 def botonesFinal():
     global textoFinal,botonInicio,botonSi,botonNo
 
@@ -132,7 +135,7 @@ def botonesFinal():
 
         botonInicio = Button(root,text="Volver a predecir otra imagen", padx=20,command=inicio,pady=20)
 
-
+#Te lleva de vuelta a la ventana inicial
 def inicio():
     try: 
         my_image_label.destroy()
@@ -142,6 +145,7 @@ def inicio():
         botonPredecir.configure(state=DISABLED)
         otraVentana()
 
+#Revisa que el objeto que le pases por parámetro existe
 def comparar(objeto):
     vivo = False
     for obj in root.winfo_children():
