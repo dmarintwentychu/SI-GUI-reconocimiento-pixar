@@ -51,25 +51,26 @@ splash_label.place(x=240,y=30)
 
 #Función para ver el vídeo:
 def visualizar():
-    global cap
-    if cap is not None:
-        ret, frame = cap.read()
-        if ret == True:
-            frame = imutils.resize(frame, width=640)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame = cv2.resize(frame, (260, 130)) 
-            nrows = 130
-            ncols = 260
-            row, col = np.ogrid[:nrows, :ncols]
-            cnt_row, cnt_col = nrows / 2, ncols / 2
-            outer_disk_mask = ((row - cnt_row)**2 + (col - cnt_col)**2 > (nrows / 2)**2)
-            frame[outer_disk_mask] = 51
-            im = Image.fromarray(frame)
-            img = ImageTk.PhotoImage(image=im)
+    global cap,fin
+    if fin == False:
+        if cap is not None:
+            ret, frame = cap.read()
+            if ret == True:
+                frame = imutils.resize(frame, width=640)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.resize(frame, (260, 130)) 
+                nrows = 130
+                ncols = 260
+                row, col = np.ogrid[:nrows, :ncols]
+                cnt_row, cnt_col = nrows / 2, ncols / 2
+                outer_disk_mask = ((row - cnt_row)**2 + (col - cnt_col)**2 > (nrows / 2)**2)
+                frame[outer_disk_mask] = 51
+                im = Image.fromarray(frame)
+                img = ImageTk.PhotoImage(image=im)
 
-            splash_label.configure(image=img)
-            splash_label.image = img
-            splash_label.after(10,visualizar)
+                splash_label.configure(image=img)
+                splash_label.image = img
+                splash_label.after(10,visualizar)
 
 #Funciones del main:
 
@@ -97,7 +98,7 @@ def open():
     my_image_label.pack()
 
     botonPredecir.config(state=NORMAL)
-    
+
 #Creacción de botones de la ventana principal y ocultación de botones de la ventana final             
 def botonesPrincipal():
     global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
@@ -253,6 +254,8 @@ def main_window():
      
     global root
     #Formato de ventana:
+    #fin = True
+    #t1.join()
     splash_root.destroy()
     root = Tk()
     root.geometry("1000x700")
@@ -279,7 +282,7 @@ progress.place(x=125,y=225)
 i = 0
 def load():
 
-    global i, tf,keras, hub,model
+    global i, tf,keras, hub,model,fin
 
     if i==2:
         import tensorflow as tf
@@ -309,12 +312,16 @@ def load():
         progress_label.after(400,load)
         progress["value"] = 10*i
         i+= 1
-    else : splash_root.after(600,main_window)   
+        
+    else : 
+        fin = True
+        splash_root.after(600,main_window)   
 
 
 cap = cv2.VideoCapture(logo_path)
-
-threading.Thread(target = visualizar).start()
+fin = False
+t1 = threading.Thread(target = visualizar)
+t1.start()
 load()
 
 
