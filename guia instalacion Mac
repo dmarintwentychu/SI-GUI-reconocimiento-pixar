@@ -13,17 +13,17 @@ source ~/miniforge3/bin/activate
 mkdir tensorflow-test
 cd tensorflow-test
 
-5: crea y activa un enviroment de conda para tenserflow (NOTA : python 3.8 es lo mas estable )
+5: crea y activa un enviroment de conda para tensorflow (NOTA : python 3.8 es lo mas estable )
 conda create --prefix ./env python=3.8
 conda activate ./env
 
 6: instala dependencias basicas de tensorflow 
 conda install -c apple tensorflow-deps
 
-7: instala tenserflow-macos
+7: instala tensorflow-macos
 python -m pip install tensorflow-macos
 
-8: instala tenserflow-metal , metal es el acelerador de macos para graficos con hardware (muy util )
+8: instala tensorflow-metal , metal es el acelerador de macos para graficos con hardware (muy util )
 python -m pip install tensorflow-metal
 
 9: instala paquetes de data comunes para data science
@@ -46,7 +46,7 @@ import matplotlib.pyplot as plt
 # mira si tenserflow tiene acceo a tu gpu 
 print(f"TensorFlow has access to the following devices:\n{tf.config.list_physical_devices()}")
 
-# mira que version de tenserflow tienes 
+# mira que version de tensorflow tienes 
 print(f"TensorFlow version: {tf.__version__}")
 
 
@@ -58,8 +58,8 @@ Pip Install h5py
 pip Install pyyaml
  
  
-si quieres abrias conda base = source ~/miniforge3/bin/activate  
-para activar en enviroment de tensorflow = conda activate tensorflow (si no te sabes el nombre del enviroment haz conda info-envs)
+si quieres abrir conda base = source ~/miniforge3/bin/activate  
+para activar el enviroment de tensorflow = conda activate tensorflow (si no te sabes el nombre del enviroment haz conda info-envs)
 
 
 
