@@ -307,7 +307,9 @@ def main_window():
     root = Tk()
     root.geometry("1000x700")
     root.title("Trabajo SI")
-    root.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
+    root.iconbitmap(current_directory + "/data/logo/Pixar.ico")
+
+
     root.resizable(False, False) 
 
     root.tk.call("source", themepath)
@@ -335,22 +337,22 @@ def load():
     global i, tf,keras, hub,model,fin
 
     if i==2:
-        import tensorflow as tf
+        #import tensorflow as tf
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
         progress["value"] = 10*i
         i+=2
     elif i == 6:
-        from tensorflow import keras
-        import tensorflow_hub as hub
+        #from tensorflow import keras
+        #import tensorflow_hub as hub
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
         progress["value"] = 10*i
         i+=1
     elif i == 8:
-        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+        #model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)

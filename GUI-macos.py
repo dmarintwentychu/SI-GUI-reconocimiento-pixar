@@ -10,9 +10,10 @@ from tkinter import font
 from tkinter import ttk
 from tkinter.ttk import Progressbar
 from tkinter import messagebox
-from ttkthemes import ThemedTk
+#from ttkthemes import ThemedTk
 import numpy as np
-
+import threading
+import random
 
 current_directory = os.getcwd()
 
@@ -38,67 +39,136 @@ splash_root.overrideredirect(1)
 
 logo_path =  current_directory + "/data/logo/logo.mp4"
 
-style = ttk.Style(splash_root)
+#style = ttk.Style(splash_root)
 
-themepath = current_directory + "/data//theme/Azure-ttk-theme-main//azure dark 2//azure dark 3.tcl"
-print(themepath)
+themepath = current_directory +  '/data//theme/Azure-ttk-theme-gif-based//azure.tcl'
+splash_style = ttk.Style(splash_root)
 splash_root.tk.call("source", themepath)
-style.theme_use('azure')
+splash_root.tk.call("set_theme", "dark")
 
+splash_root.update()
 
-splash_label = Label(splash_root, width=140, height=130)
-splash_label.place(x=240,y=30)
 
 #Función para ver el vídeo:
 def visualizar():
-    global cap
-    if cap is not None:
-        ret, frame = cap.read()
-        if ret == True:
-            frame = imutils.resize(frame, width=640)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame = cv2.resize(frame, (260, 130)) 
-            nrows = 130
-            ncols = 260
-            row, col = np.ogrid[:nrows, :ncols]
-            cnt_row, cnt_col = nrows / 2, ncols / 2
-            outer_disk_mask = ((row - cnt_row)**2 + (col - cnt_col)**2 > (nrows / 2)**2)
-            frame[outer_disk_mask] = 51
-            im = Image.fromarray(frame)
-            img = ImageTk.PhotoImage(image=im)
+    global cap,fin
+    if fin == False:
+        if cap is not None:
+            ret, frame = cap.read()
+            if ret == True:
+                frame = imutils.resize(frame, width=640)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.resize(frame, (260, 130)) 
+                nrows = 130
+                ncols = 260
+                row, col = np.ogrid[:nrows, :ncols]
+                cnt_row, cnt_col = nrows / 2, ncols / 2
+                outer_disk_mask = ((row - cnt_row)**2 + (col - cnt_col)**2 > (nrows / 2)**2)
+                frame[outer_disk_mask] = 51
+                im = Image.fromarray(frame)
+                img = ImageTk.PhotoImage(image=im)
 
-            splash_label.configure(image=img)
-            splash_label.image = img
-            splash_label.after(10, visualizar)
+                splash_label.configure(image=img)
+                splash_label.image = img
+                splash_label.after(10,visualizar)
 
 #Funciones del main:
+
+def reescalarsi(dummy):
+
+    global width
+    width, height = dummy.size
+    if width >800:
+        dummy = dummy.resize((800,height))
+        width=800
+    if height > 400:
+        dummy = dummy.resize((height,400))
+    return dummy
 
 #Abrir la foto que quieras para predecir
 def open():
     global actual_image, my_image_label #mainFrame
-    
+
     #mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
 
     root.filename = filedialog.askopenfilename(initialdir=current_directory + "/Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
-    actual_image = ImageTk.PhotoImage(Image.open(root.filename))
-    botonSelección.destroy()
-    frame.config(padx=100,pady=100)
-    my_image_label= Label(frame,image=actual_image).grid()
-    botonPredecir.config(state=NORMAL)
+    dummy = Image.open(root.filename)
+    dummy = reescalarsi(dummy)
+    actual_image = ImageTk.PhotoImage(dummy)
+    botonSeleccion.grid_forget()
+    my_image_label= ttk.Label(frame,image=actual_image,width=800)
+    my_image_label.pack(pady=80*((800-width)/2)/width)
+
+
+    botonPredecir.config(state=NORMAL,style="Accent.TButton")
+
+#Creacción de botones de la ventana principal y ocultación de botones de la ventana final             
+def botonesPrincipal():
+    global frame, botonOtraPrediccion, botonPredecir, botonSeleccion,textoInferior
+
+
+    try:
+        if comparar(textoFinal):
+            textoFinal.place_forget()
+            botonSi.place_forget()
+            botonNo.place_forget()
+            botonInicio.place_forget()
+
+    except NameError:
+           
+        frame = ttk.LabelFrame(root, text="")
         
+        botonSeleccion = ttk.Button(frame, text ="Selecciona una imagen",style="Accent.TButton", command=open,width=40)
+        textoInferior = ttk.Label(root, text="Selecciona una imagen en formato .jpg", font=("ComicSans", 20))
+        botonPredecir = ttk.Button(root, text="Predecir", width=30,state=DISABLED, command=confirmacion)
+        botonOtraPrediccion = ttk.Button(root,style="Accent.TButton", text="Elegir otra imagen para predecir", command=inicio)
+
+        
+
+
+#Creacción de botones de la ventana final y ocultación de botones de la ventana principal
+def botonesFinal():
+    global textoFinal,botonInicio,botonSi,botonNo
+
+
+    if comparar(textoInferior):
+        textoInferior.place_forget()
+        botonOtraPrediccion.place_forget()
+        botonPredecir.place_forget()    
+        textoFinal= ttk.Label(root, text="Es tu personaje "+ nombrePj + "?", font=("ComicSans", 20))
+
+        botonSi = ttk.Button(root, text="Si",style="Accent.TButton",command=lambda: memes(1))
+
+        botonNo = ttk.Button(root, text="No",style="Accent.TButton", command=lambda: memes(0))
+
+        botonInicio = ttk.Button(root,text="Volver a predecir otra imagen",style="Accent.TButton", command=inicio)
+
+#Te lleva de vuelta a la ventana inicial
+def inicio():
+    try: 
+        my_image_label.destroy()
+        botonPredecir.configure(state=DISABLED,style ="TButton")
+        otraVentana()
+    except NameError:
+        botonPredecir.configure(state=DISABLED,style ="TButton")
+        otraVentana()
+
+#Revisa que el objeto que le pases por parámetro existe
+def comparar(objeto):
+    vivo = False
+    for obj in root.winfo_children():
+        if isinstance(obj, type(objeto)):
+            vivo = True
+
+    return vivo
 
 #predicción con tensorflow
 def predecir():
 
+    global nombrePj
     
-    #tf.keras.backend.clear_session()  # Para restablecer fácilmente el estado del portátil. No necesario o si ni idea jiji
 
-
-    current_directory = os.path.dirname(os.path.realpath(__file__))
-    model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
-
-    #model.summary()
-
+    tf.keras.backend.clear_session()  # Para restablecer fácilmente el estado del portátil. No necesario o si ni idea jiji
 
     image = PIL.Image.open(root.filename)
 
@@ -133,8 +203,8 @@ def predecir():
 
     #print(class_names[predicted_id[0]]) # Este es el valor que predice
     #Llamamos a la ventana final que pone el personaje y la predicción
-    ventanaFinal(class_names[predicted_id[0]])
-
+    nombrePj = class_names[predicted_id[0]]
+    ventanaFinal()
 
 #Pregunta de si quiere predecir
 def confirmacion():
@@ -143,75 +213,101 @@ def confirmacion():
         predecir()
 
     else: 
-        otraVentana() 
+        inicio() 
+
 
 #Ventana mostrando el pj y preguntando si ha acertado
-def ventanaFinal(nombrePj):
-    global imagenPersonaje
-    print(nombrePj)
+def ventanaFinal():
+    
+    botonesFinal()
+
+    textoFinal.place(x=270, y=450)
+
+    botonSi.place(x=400, y=500)
+
+    botonNo.place(x=506, y=500)
+
+    botonInicio.place(x=420, y=540)
 
     
-
-
-
-
-
 #Creacción de botones para las distintas ventanas
 def otraVentana():
 
-    global frame,botonSelección,botonPredecir
+    botonesPrincipal()
 
-    espacio = Label(root, text = "                ").grid(column=0)
     
+    frame.place(x=50,y=15,width=900, height=425)
+    frame.pack_propagate(0)
 
-    frame = LabelFrame(root, padx=370, pady=250)
-    frame.grid(row = 0, column= 1, columnspan= 5)
+    botonSeleccion.grid(row=2, column=2,padx=300,pady=180)
 
-    botonSelección = Button(frame, text ="Selecciona una imagen", command=open)
-    botonSelección.grid(row = 1, column=3)
+    textoInferior.place(x=270, y=450)
+  
+    botonPredecir.place(x=500, y=500)
 
-    textoInferior = Label(root, text="Selecciona una imagen en formato .jgp", font=("ComicSans", 20))
-    textoInferior.grid(row=2, column=3)
+    botonOtraPrediccion.place(x=280, y=500)
 
-    saltoLin=Label(root, text =" ").grid(row=3)
+#Generador de memesfelices o tristes cuando clicke en si o en No
+def memes(respuesta):
 
-    botonPredecir = Button(text="Predecir", width=50,state=DISABLED, command=confirmacion)
-    botonPredecir.grid(row=4, column=3)
+    top=Toplevel()    
+    top.geometry("500x350")
+    top.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
+    imgGif = random.randint(1,2)
 
+    if respuesta==1:
+        top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
+        if imgGif == 1:
+            print("Meme en Imagen")
+        else :
+            print("Meme en Gif")
+
+    else :
+        top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
+        if imgGif == 1:
+            print("Meme en Imagen")
+        else :
+            print("Meme en Gif")
+
+#carpetas nuevas
 
 #VENTANA PRINCIPAL:
 def main_window():
      
     global root
     #Formato de ventana:
-    splash_label.destroy()
+   
+
     splash_root.destroy()
     root = Tk()
     root.geometry("1000x700")
     root.title("Trabajo SI")
-    root.iconbitmap(current_directory + "/data/logo/Icono.ico")
+    root.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
+    root.resizable(False, False) 
+
+    root.tk.call("source", themepath)
+    root.tk.call("set_theme", "dark")
+
 
     otraVentana()
-    
-    
 
 #LLamada a la ventana SPLASH
 
-cap = cv2.VideoCapture(logo_path)
-visualizar()
 
+splash_label = Label(splash_root, width=140, height=130)
+splash_label.place(x=240,y=30)
 
 progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF")
 progress_label.place(x=300,y=190)
 
 
-progress = Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate")
+progress = ttk.Progressbar(splash_root,orient=HORIZONTAL, length=400, mode = "determinate")
 progress.place(x=125,y=225)
 
 i = 0
 def load():
 
-    global i, tf,keras, hub
+    global i, tf,keras, hub,model,fin
 
     if i==2:
         import tensorflow as tf
@@ -221,15 +317,15 @@ def load():
         progress["value"] = 10*i
         i+=2
     elif i == 6:
+        from tensorflow import keras
         import tensorflow_hub as hub
-        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
         progress["value"] = 10*i
         i+=1
     elif i == 8:
-        from tensorflow import keras
+        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
@@ -238,11 +334,20 @@ def load():
     elif i<=10:
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
-        progress_label.after(100,load)
+        progress_label.after(400,load)
         progress["value"] = 10*i
         i+= 1
-    else : splash_root.after(600,main_window)   
+        
+    else : 
+        fin = True
+        splash_root.after(600,main_window)
 
 
+cap = cv2.VideoCapture(logo_path)
+fin = False
+t1 = threading.Thread(target = visualizar)
+t1.start()
 load()
+
+
 mainloop()
