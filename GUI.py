@@ -12,7 +12,7 @@ from tkinter.ttk import Progressbar
 from tkinter import messagebox
 from ttkthemes import ThemedTk
 import numpy as np
-
+import threading
 
 current_directory = os.getcwd()
 
@@ -69,19 +69,17 @@ def visualizar():
 
             splash_label.configure(image=img)
             splash_label.image = img
-            splash_label.after(10, visualizar)
+            splash_label.after(10,visualizar)
 
 #Funciones del main:
 
 def reescalarsi(dummy):
 
     width, height = dummy.size
-    print(dummy.size)
     if width >800:
         dummy = dummy.resize((800,height))
     if height > 400:
         dummy = dummy.resize((height,400))
-    print(dummy.size)
     return dummy
 
 #Abrir la foto que quieras para predecir
@@ -158,13 +156,6 @@ def predecir():
     global nombrePj
 
     tf.keras.backend.clear_session()  # Para restablecer fácilmente el estado del portátil. No necesario o si ni idea jiji
-
-
-    current_directory = os.path.dirname(os.path.realpath(__file__))
-    model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
-
-    #model.summary()
-
 
     image = PIL.Image.open(root.filename)
 
@@ -270,10 +261,6 @@ def main_window():
 
 #LLamada a la ventana SPLASH
 
-cap = cv2.VideoCapture(logo_path)
-visualizar()
-
-
 progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF")
 progress_label.place(x=300,y=190)
 
@@ -284,7 +271,7 @@ progress.place(x=125,y=225)
 i = 0
 def load():
 
-    global i, tf,keras, hub
+    global i, tf,keras, hub,model
 
     if i==2:
         import tensorflow as tf
@@ -317,5 +304,11 @@ def load():
     else : splash_root.after(600,main_window)   
 
 
+cap = cv2.VideoCapture(logo_path)
+t1 = threading.Thread(target=visualizar).start()
+
 load()
+
+
+
 mainloop()
