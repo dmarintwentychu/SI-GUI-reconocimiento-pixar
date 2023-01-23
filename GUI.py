@@ -15,6 +15,8 @@ import numpy as np
 import threading
 import random
 
+
+
 current_directory = os.getcwd()
 
 
@@ -248,7 +250,7 @@ def otraVentana():
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
 def memes(respuesta):
-    global top,topLabelIF,imagenF,imagenT
+    global top,topLabelIF,imagenF,imagenT,framesCnt,frames,canvas
 
     top=Toplevel()    
     top.geometry("500x350")
@@ -270,12 +272,20 @@ def memes(respuesta):
             top.after(2000, habilitarBtn)
         else :
             print("Meme en Gif")
+            
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            
-            top.after(2000, habilitarBtn)
+            print(meme)
+            dummy = Image.open(current_directory+"/data/memesGifFelices/"+ str(meme)+".gif")
+            framesCnt = dummy.n_frames
+            frames = [PhotoImage(file=current_directory+"/data/memesGifFelices/"+ str(meme)+".gif",format = 'gif -index %i' %(i)) for i in range(framesCnt)]
+            canvas = Canvas(top, width=500, height=350) # Modificar segun el tamaño de la imagen
+            canvas.pack()
+            visualizarGif(0)
+            top.after((framesCnt*60), habilitarBtn)
 
     else :
+
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
         if imgGif == 1:
             print("Meme en Imagen")
@@ -286,12 +296,38 @@ def memes(respuesta):
             imagenT = ImageTk.PhotoImage(dummy)
             topLabelIF= ttk.Label(top,image=imagenT).pack()
             top.after(2000, habilitarBtn)
+
         else :
-            print("Meme en Gif")
-            listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
-            meme = random.randint(1,len(listaArchivos))
             
-            top.after(2000, habilitarBtn)
+            print("Meme en Gif")
+            
+            listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
+            meme = random.randint(2,len(listaArchivos))
+            print(meme)
+            dummy = Image.open(current_directory+"/data/memesGifTristes/"+ str(meme)+".gif")
+            framesCnt = dummy.n_frames
+            frames = [PhotoImage(file=current_directory+"/data/memesGifTristes/"+ str(meme)+".gif",format = 'gif -index %i' %(i)) for i in range(framesCnt)]
+            canvas = Canvas(top, width=500, height=350) # Modificar segun el tamaño de la imagen
+            canvas.pack()
+            visualizarGif(0)
+            top.after((framesCnt*60), habilitarBtn)
+
+
+
+
+#Funcion para visualizar gifs
+def visualizarGif(ind):
+    global canvas
+
+    frame = frames[ind]
+    ind += 1
+    if ind == framesCnt:
+        ind = 0
+    canvas.create_image(0, 0, image=frame, anchor=NW)
+    top.after(20, visualizarGif, ind)
+
+
+
 
 #Cerrar ventana y habilitar botones :)
 def habilitarBtn():
