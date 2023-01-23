@@ -189,7 +189,7 @@ def main_window():
     root = Tk()
     root.geometry("1000x700")
     root.title("Trabajo SI")
-    root.iconbitmap(current_directory+ "/data/logo/Icono.ico")
+    root.iconbitmap(current_directory + "/data/logo/Icono.ico")
 
     otraVentana()
     
