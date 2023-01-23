@@ -10,10 +10,9 @@ from tkinter import font
 from tkinter import ttk
 from tkinter.ttk import Progressbar
 from tkinter import messagebox
-from ttkthemes import ThemedTk
+#from ttkthemes import ThemedTk
 import numpy as np
 import threading
-from io import BytesIO
 import random
 
 current_directory = os.getcwd()
@@ -49,8 +48,6 @@ splash_root.tk.call("set_theme", "dark")
 
 splash_root.update()
 
-splash_label = Label(splash_root, width=140, height=130)
-splash_label.place(x=240,y=30)
 
 #Función para ver el vídeo:
 def visualizar():
@@ -79,9 +76,11 @@ def visualizar():
 
 def reescalarsi(dummy):
 
+    global width
     width, height = dummy.size
     if width >800:
         dummy = dummy.resize((800,height))
+        width=800
     if height > 400:
         dummy = dummy.resize((height,400))
     return dummy
@@ -98,7 +97,8 @@ def open():
     actual_image = ImageTk.PhotoImage(dummy)
     botonSeleccion.grid_forget()
     my_image_label= ttk.Label(frame,image=actual_image,width=800)
-    my_image_label.pack()
+    my_image_label.pack(pady=80*((800-width)/2)/width)
+
 
     botonPredecir.config(state=NORMAL,style="Accent.TButton")
 
@@ -292,6 +292,10 @@ def main_window():
     otraVentana()
 
 #LLamada a la ventana SPLASH
+
+
+splash_label = Label(splash_root, width=140, height=130)
+splash_label.place(x=240,y=30)
 
 progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF")
 progress_label.place(x=300,y=190)
