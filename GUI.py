@@ -38,12 +38,11 @@ splash_root.overrideredirect(1)
 
 logo_path =  current_directory + "/data/logo/logo.mp4"
 
-style = ttk.Style(splash_root)
+#style = ttk.Style(splash_root)
 
-themepath = current_directory + "/data//theme/Azure-ttk-theme-main//azure dark 2//azure dark 3.tcl"
-print(themepath)
+themepath = current_directory +  "\data\\theme\\azure_ttk2-main\\azure.tcl"
 splash_root.tk.call("source", themepath)
-style.theme_use('azure')
+splash_root.tk.call("set_theme", "dark")
 
 
 splash_label = Label(splash_root, width=140, height=130)
@@ -261,9 +260,11 @@ def main_window():
     root.geometry("1000x700")
     root.title("Trabajo SI")
     root.iconbitmap(current_directory+ "/data/logo/Icono.ico")
-    root.resizable(False, False) 
+    root.resizable(False, False)
 
-
+    root.tk.call("source", current_directory +  "\data\\theme\\azure_ttk2-main\\azure.tcl")
+    root.tk.call("set_theme", "dark")
+    
 
     otraVentana()
     
