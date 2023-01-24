@@ -14,6 +14,8 @@ from tkinter import messagebox
 import numpy as np
 import threading
 import random
+from PIL import ImageSequence
+
 
 current_directory = os.getcwd()
 
@@ -76,7 +78,7 @@ def visualizar():
 
 def reescalarsi(dummy):
 
-    global width
+    global height
     width, height = dummy.size
     if width >800:
         dummy = dummy.resize((800,height))
@@ -97,8 +99,7 @@ def open():
     actual_image = ImageTk.PhotoImage(dummy)
     botonSeleccion.grid_forget()
     my_image_label= ttk.Label(frame,image=actual_image,width=800)
-    my_image_label.pack(pady=80*((800-width)/2)/width)
-
+    my_image_label.pack(pady=199-(height/2))
 
     botonPredecir.config(state=NORMAL,style="Accent.TButton")
 
@@ -227,7 +228,7 @@ def ventanaFinal():
 
     botonNo.place(x=506, y=500)
 
-    botonInicio.place(x=420, y=540)
+    botonInicio.place(x=400, y=540)
 
     
 #Creacción de botones para las distintas ventanas
@@ -249,27 +250,114 @@ def otraVentana():
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
 def memes(respuesta):
+    global top,topLabelIF,imagenF,imagenT,framesCnt,frames,canvas,path
 
     top=Toplevel()    
     top.geometry("500x350")
-    top.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
+
+    width_of_window = 500
+    height_of_window = 350
+    screen_width = top.winfo_screenwidth()
+    screen_height = top.winfo_screenheight()
+    x_coordinate = (screen_width/2)-(width_of_window/2)
+    y_coordinate = (screen_height/2)-(height_of_window/2)
+    top.geometry("%dx%d+%d+%d" %(width_of_window,height_of_window,x_coordinate,y_coordinate))
+
     imgGif = random.randint(1,2)
+    botonSi.config(state=DISABLED,style ="TButton")
+    botonNo.config(state=DISABLED,style ="TButton")
+    top.overrideredirect(1)
 
     if respuesta==1:
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
         if imgGif == 1:
             print("Meme en Imagen")
+            listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
+            meme = random.randint(1,len(listaArchivos))
+            dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
+            dummy = dummy.resize((500,350))
+            imagenF = ImageTk.PhotoImage(dummy)
+            topLabelIF= ttk.Label(top,image=imagenF).pack()
+            top.after(2000, habilitarBtn)
         else :
             print("Meme en Gif")
+            
+            listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
+            meme = random.randint(1,len(listaArchivos))
+            print(meme)
+            path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
+            dummy = Image.open(path)
+            framesCnt = dummy.n_frames
+            play_gif()
+            top.after((framesCnt), habilitarBtn)
+    
 
     else :
+
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
         if imgGif == 1:
             print("Meme en Imagen")
-        else :
-            print("Meme en Gif")
+            listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
+            meme = random.randint(1,len(listaArchivos))
+            dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
+            dummy = dummy.resize((500,350))
+            imagenT = ImageTk.PhotoImage(dummy)
+            topLabelIF= ttk.Label(top,image=imagenT).pack()
+            top.after(2000, habilitarBtn)
 
-#carpetas nuevas
+        else :
+            
+            print("Meme en Gif")
+            
+            listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
+            meme = random.randint(2,len(listaArchivos))
+            print(meme)
+            path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
+            dummy = Image.open(path)
+            framesCnt = dummy.n_frames
+            play_gif()
+            top.after((framesCnt), habilitarBtn)
+
+
+def play_gif():
+    global path,top
+
+    img = Image.open(path)
+    #lbl = Label(top)
+    #lbl.pack()
+
+    canvas = Canvas(top, width=500, height=350) # Modificar segun el tamaño de la imagen
+    canvas.pack()
+    for img in ImageSequence.Iterator(img):
+        
+        img = img.resize((500,350))
+        img = ImageTk.PhotoImage(img)
+        #lbl.config(image = img)
+        canvas.create_image(0, 0, image=img, anchor=NW)
+        top.update()
+        time.sleep(0.02)
+    #top.after(0,play_gif)
+
+
+#Funcion para visualizar gifs
+def visualizarGif(ind):
+    global canvas
+
+    frame = frames[ind]
+    ind += 1
+    if ind == framesCnt:
+        ind = 0
+    canvas.create_image(0, 0, image=frame, anchor=NW)
+    top.after(20, visualizarGif, ind)
+
+
+
+
+#Cerrar ventana y habilitar botones :)
+def habilitarBtn():
+    top.destroy()
+    botonSi.config(state=NORMAL,style="Accent.TButton")
+    botonNo.config(state=NORMAL,style="Accent.TButton")
 
 #VENTANA PRINCIPAL:
 def main_window():
@@ -282,7 +370,9 @@ def main_window():
     root = Tk()
     root.geometry("1000x700")
     root.title("Trabajo SI")
-    root.iconbitmap(current_directory+ "/data/logo/Pixar.ico")
+    root.iconbitmap(current_directory + "/data/logo/Pixar.ico")
+
+
     root.resizable(False, False) 
 
     root.tk.call("source", themepath)
