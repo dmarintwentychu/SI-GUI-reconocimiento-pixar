@@ -84,7 +84,8 @@ def reescalarsi(dummy):
         dummy = dummy.resize((800,height))
         width=800
     if height > 400:
-        dummy = dummy.resize((height,400))
+        dummy = dummy.resize((width,399))
+        height = 399
     return dummy
 
 #Abrir la foto que quieras para predecir
@@ -99,7 +100,7 @@ def open():
     actual_image = ImageTk.PhotoImage(dummy)
     botonSeleccion.grid_forget()
     my_image_label= ttk.Label(frame,image=actual_image,width=800)
-    my_image_label.pack(pady=199-(height/2))
+    my_image_label.pack(pady=200-(height/2))
 
     botonPredecir.config(state=NORMAL,style="Accent.TButton")
 
@@ -168,7 +169,6 @@ def predecir():
 
     global nombrePj
     
-
     tf.keras.backend.clear_session()  # Para restablecer fácilmente el estado del portátil. No necesario o si ni idea jiji
 
     image = PIL.Image.open(root.filename)
@@ -222,13 +222,13 @@ def ventanaFinal():
     
     botonesFinal()
 
-    textoFinal.place(x=270, y=450)
+    textoFinal.place(x=root.winfo_width()/2, y=480, anchor="center")
 
-    botonSi.place(x=400, y=500)
+    botonSi.place(x=400, y=530)
 
-    botonNo.place(x=506, y=500)
+    botonNo.place(x=506, y=530)
 
-    botonInicio.place(x=400, y=540)
+    botonInicio.place(x=400, y=570)
 
     
 #Creacción de botones para las distintas ventanas
@@ -242,11 +242,11 @@ def otraVentana():
 
     botonSeleccion.grid(row=2, column=2,padx=300,pady=180)
 
-    textoInferior.place(x=270, y=450)
-  
-    botonPredecir.place(x=500, y=500)
+    #textoInferior.place(x=265, y=480)
+    textoInferior.place(x=root.winfo_width()/2, y=480, anchor="center")
+    botonPredecir.place(x=495, y=530)
 
-    botonOtraPrediccion.place(x=280, y=500)
+    botonOtraPrediccion.place(x=275, y=530)
 
 #Generador de memesfelices o tristes cuando clicke en si o en No
 def memes(respuesta):
@@ -288,7 +288,7 @@ def memes(respuesta):
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
-            play_gif()
+            threading.Thread(play_gif())
             top.after((framesCnt), habilitarBtn)
     
 
@@ -315,7 +315,7 @@ def memes(respuesta):
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
-            play_gif()
+            threading.Thread(play_gif())
             top.after((framesCnt), habilitarBtn)
 
 
@@ -385,7 +385,7 @@ def main_window():
 
 
 splash_label = Label(splash_root, width=140, height=130)
-splash_label.place(x=240,y=30)
+splash_label.place(x=243,y=33)
 
 progress_label = Label(splash_root, text="", font=("Times New Roman",13,"bold"), fg="#FFFFFF")
 progress_label.place(x=300,y=190)
