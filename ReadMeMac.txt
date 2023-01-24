@@ -66,3 +66,5 @@ si abres con vscode el interprete te tiene que quedar un tal que asi ( python 3.
 
 a veces hay errorers de bus o segmentacion ( no hemos podido ver porque es algo de arm64 y memory allocation  , cierra abre vscode e intenta otra vez )
 
+
+11: Tras todo esto debería funcionarle la aplicación, asi que pruebelo abriendo GUI-macos.exe
