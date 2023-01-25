@@ -1,3 +1,5 @@
+Hemos metido sonidos y estan algunos un poco altos, le recomendamos que baje el volumen del ordenador antes de ejecutar la aplicación
+
 1º: Tener descargada la versión 3.9 o superiores de python. Si no funciona en python 3.10 en adelante, desinstalar y probar con la versión 3.9.
 
 2º: Ejecute el programa imports.py, que son los imports necesarios para la correcta ejecución del programa.
@@ -11,3 +13,4 @@
 3.2º: Vuelva a intentar instalar tensorflow con el comando de "3º"
 
 4º: Ejecutar la aplicación GUI.exe
+

@@ -15,7 +15,11 @@ import numpy as np
 import threading
 import random
 from PIL import ImageSequence
-import pygame
+import sounddevice
+import scipy.io.wavfile
+from pycaw.pycaw import AudioUtilities, ISimpleAudioVolume
+from ctypes import cast, POINTER
+from comtypes import CLSCTX_ALL
 
 
 current_directory = os.getcwd()
@@ -241,7 +245,7 @@ def otraVentana():
 
 #Generador de memes felices o tristes cuando clicke en si o en No
 def memes(respuesta):
-    global top,topLabelIF,imagenF,imagenT,framesCnt,frames,canvas,path
+    global top,topLabelIF,imagenF,imagenT,framesCnt,path,meme
 
     top=Toplevel()    
     top.geometry("500x350")
@@ -258,33 +262,32 @@ def memes(respuesta):
     botonSi.config(state=DISABLED,style ="TButton")
     botonNo.config(state=DISABLED,style ="TButton")
     top.overrideredirect(1)
-    musica = os.path.split(current_directory+ "/data/canciones")[0]
-    pygame.mixer.init()
-
-    os.add_dll_directory(musica)
+    
+    
 
 
     if respuesta==1:
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
+        ruta = current_directory + "/data/cancionesFelices/"
+        listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesFelices")))
         if imgGif == 1:
             
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
-            pygame.mixer.music.load(current_directory+ "/data/canciones/1.mp3")#+str(meme)+".mp3")
+            abrirCancion(listCanciones,ruta)
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
-            pygame.mixer.music.play(loops=-1)
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
             topLabelIF= ttk.Label(top,image=imagenF).pack()
-            top.after(2000, habilitarBtn)
+            top.after(5000, habilitarBtn)
         else :
-            print("Meme en Gif")
+            
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            pygame.mixer.music.load(current_directory+ "/data/canciones/1.mp3")#+str(meme)+".mp3")
+            abrirCancion(listCanciones,ruta)
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
-            pygame.mixer.music.play(loops=-1)
+           
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
             threading.Thread(play_gif())
@@ -294,17 +297,18 @@ def memes(respuesta):
     else :
 
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
+        ruta = current_directory + "/data/cancionesTristes/"
+        listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesTristes")))
         if imgGif == 1:
             
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
-            pygame.mixer.music.load(current_directory+ "/data/canciones/"+str(meme)+".mp3")
+            abrirCancion(listCanciones,ruta)
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
-            pygame.mixer.music.play(loops=-1)
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
             topLabelIF= ttk.Label(top,image=imagenT).pack()
-            top.after(2000, habilitarBtn)
+            top.after(5000, habilitarBtn)
 
         else :
             
@@ -312,9 +316,9 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
-            pygame.mixer.music.load(current_directory+ "/data/canciones/"+str(meme)+".mp3")
+            abrirCancion(listCanciones,ruta)
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
-            pygame.mixer.music.play(loops=-1)
+     
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
             threading.Thread(play_gif())
@@ -338,24 +342,14 @@ def play_gif():
         time.sleep(0.02)
     
 
-
-#Funcion para visualizar gifs
-def visualizarGif(ind):
-    global canvas
-
-    frame = frames[ind]
-    ind += 1
-    if ind == framesCnt:
-        ind = 0
-    canvas.create_image(0, 0, image=frame, anchor=NW)
-    top.after(20, visualizarGif, ind)
-
-
+#Abrir los sonidos que suenan con los memes
+def abrirCancion(cancion, ruta):
+    muestreo, sonido = scipy.io.wavfile.read(ruta+str(cancion)+ ".wav")
+    sounddevice.play(sonido, muestreo)
 
 
 #Cerrar ventana y habilitar botones :)
 def habilitarBtn():
-    pygame.mixer.music.stop()
     top.destroy()
     botonSi.config(state=NORMAL,style="Accent.TButton")
     botonNo.config(state=NORMAL,style="Accent.TButton")
@@ -365,6 +359,7 @@ def main_window():
      
     global root
     #Formato de ventana:
+   
 
     splash_root.destroy()
     root = Tk()
