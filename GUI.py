@@ -20,10 +20,6 @@ import pygame
 
 current_directory = os.getcwd()
 
-
-
-#IMPORTANTE: ESTO TARDA 5s en funcionar + PUEDE DAR ERRORES AL HACER EL PIP INSTALL🤬🖕 (Solucionarlo es fácil al menos en windows, en mac ni idea)
-
 #PANTALLA SPLASH:
 
 #Formato de la pantalla de splash y vídeo:
@@ -41,8 +37,6 @@ splash_root.title("Fary")
 splash_root.overrideredirect(1)
 
 logo_path =  current_directory + "/data/logo/logo.mp4"
-
-#style = ttk.Style(splash_root)
 
 themepath = current_directory +  '\data\\theme\Azure-ttk-theme-gif-based\\azure.tcl'
 splash_style = ttk.Style(splash_root)
@@ -92,8 +86,6 @@ def reescalarsi(dummy):
 #Abrir la foto que quieras para predecir
 def open():
     global actual_image, my_image_label #mainFrame
-
-    #mainFrame = LabelFrame(root,padx=50,pady=50).grid(row=0,column=0)
 
     root.filename = filedialog.askopenfilename(initialdir=current_directory + "/Test",title="Selecciona una imagen", filetypes=(("jpg files", "*.jpg"),("all files", "*.*")))
     dummy = Image.open(root.filename)
@@ -182,13 +174,13 @@ def predecir():
     image = np.array(image.resize((width, baseheight)))
     print(image.shape)
 
-    #Como el formato es el siguiente (None,224,224,1) -> (1, 224, 224, 1):
+    #Como el formato es el siguiente (None,224,224,1) <- (1, 224, 224):
 
-    image = np.expand_dims(image, axis=0) # To make the shape as (1, 224, 224)
-    image = np.expand_dims(image, axis=-1) # To make the shape as (1, 224, 224, 1)
+    image = np.expand_dims(image, axis=0)  #(1, 224, 224)
+    image = np.expand_dims(image, axis=-1) #(1, 224, 224, 1)
     print(image.shape)
 
-    #HAY QUE HACER EL MISMO PREPROCESAMIENTO O SI NO NO FUNCIONA .|.
+    #HAY QUE HACER EL MISMO PREPROCESAMIENTO O SI NO NO FUNCIONA
     normalization_layer = tf.keras.layers.Rescaling(1./255)
     image = normalization_layer(image) 
 
@@ -196,19 +188,18 @@ def predecir():
     predicted_batch = model.predict(image) # FUNCIÓN PARA PREDECIR LA IMAGEN
 
     predicted_id = tf.math.argmax(predicted_batch, axis=-1)
-    predicted_id = predicted_id.numpy() #Sepasa a numpy porque el formato es raro (tuple)
-
-    #print(predicted_id) #Número correspondiente al personaje predicho
+    predicted_id = predicted_id.numpy() #Se pasa a numpy porque el formato es raro (tuple)
 
     #Esta es la lista para convertir el número predicho en su correspondiente label
     class_names = ["Alfredo Linguini de Ratatoui","Boo de Monstruos S.A","Capitan B. McCrea de Wall-E","Carl Fredricksen de Up","Charles Muntz de Up","Chick Hicks de cars","Dash de los increibles","Doc Huston de cars","Dori de Buscando a Nemo","Edna de los increibles","Elastic girl de los increibles","Eva de Wall-E","Flo de cars","Frozono de los increibles","Gill de Buscando a Nemo","Guido de cars","Henry J. Waternoose III de Monstruos S.A","Jessie de Toy Story 3","Lightyear de Toy Story 3","Lotso de Toy Story 3","Luigi de cars","Marlin de Buscando a Nemo","Mate de cars","Mike Wazowski de Monstruos S.A","Mr. Increible de los increibles","Ramon de cars","Rayo de cars","Remy de Ratatoui","Rex de Toy Story 3","Russell de Up","Sally de cars","Sindrome de los increibles","Skinner de Ratatoui","Sr. Potato de Toy Story 3","Strip 'The King' Weathers de cars","Sully de Monstruos S.A","Violeta de los increibles","Wall-E de Wall-E","Woody de Toy Story 3","Nemo de Buscando a Nemo","Randall Boggs de Monstruos S.A"]
 
     #print(class_names[predicted_id[0]]) # Este es el valor que predice
+
     #Llamamos a la ventana final que pone el personaje y la predicción
     nombrePj = class_names[predicted_id[0]]
     ventanaFinal()
 
-#Pregunta de si quiere predecir
+#Pregunta si quiere predecir
 def confirmacion():
     respuesta = messagebox.askquestion("Mensaje de confirmación", "¿Quieres predecir esa imagen?")
     if respuesta == "yes":
@@ -243,13 +234,12 @@ def otraVentana():
 
     botonSeleccion.grid(row=2, column=2,padx=300,pady=180)
 
-    #textoInferior.place(x=265, y=480)
     textoInferior.place(x=root.winfo_width()/2, y=480, anchor="center")
     botonPredecir.place(x=495, y=530)
 
     botonOtraPrediccion.place(x=275, y=530)
 
-#Generador de memesfelices o tristes cuando clicke en si o en No
+#Generador de memes felices o tristes cuando clicke en si o en No
 def memes(respuesta):
     global top,topLabelIF,imagenF,imagenT,framesCnt,frames,canvas,path
 
@@ -335,8 +325,6 @@ def play_gif():
     global path,top
 
     img = Image.open(path)
-    #lbl = Label(top)
-    #lbl.pack()
 
     canvas = Canvas(top, width=500, height=350) # Modificar segun el tamaño de la imagen
     canvas.pack()
@@ -344,11 +332,11 @@ def play_gif():
         
         img = img.resize((500,350))
         img = ImageTk.PhotoImage(img)
-        #lbl.config(image = img)
+        
         canvas.create_image(0, 0, image=img, anchor=NW)
         top.update()
         time.sleep(0.02)
-    #top.after(0,play_gif)
+    
 
 
 #Funcion para visualizar gifs
@@ -377,7 +365,6 @@ def main_window():
      
     global root
     #Formato de ventana:
-   
 
     splash_root.destroy()
     root = Tk()
@@ -395,7 +382,6 @@ def main_window():
     otraVentana()
 
 #LLamada a la ventana SPLASH
-
 
 splash_label = Label(splash_root, width=140, height=130)
 splash_label.place(x=243,y=33)
