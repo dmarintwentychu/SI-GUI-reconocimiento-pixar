@@ -15,6 +15,7 @@ import numpy as np
 import threading
 import random
 from PIL import ImageSequence
+import pygame
 
 
 current_directory = os.getcwd()
@@ -267,14 +268,21 @@ def memes(respuesta):
     botonSi.config(state=DISABLED,style ="TButton")
     botonNo.config(state=DISABLED,style ="TButton")
     top.overrideredirect(1)
+    musica = os.path.split(current_directory+ "/data/canciones")[0]
+    pygame.mixer.init()
+
+    os.add_dll_directory(musica)
+
 
     if respuesta==1:
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
         if imgGif == 1:
-            print("Meme en Imagen")
+            
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
+            pygame.mixer.music.load(current_directory+ "/data/canciones/1.mp3")#+str(meme)+".mp3")
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
+            pygame.mixer.music.play(loops=-1)
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
             topLabelIF= ttk.Label(top,image=imagenF).pack()
@@ -284,8 +292,9 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            print(meme)
+            pygame.mixer.music.load(current_directory+ "/data/canciones/1.mp3")#+str(meme)+".mp3")
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
+            pygame.mixer.music.play(loops=-1)
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
             threading.Thread(play_gif())
@@ -296,10 +305,12 @@ def memes(respuesta):
 
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
         if imgGif == 1:
-            print("Meme en Imagen")
+            
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
+            pygame.mixer.music.load(current_directory+ "/data/canciones/"+str(meme)+".mp3")
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
+            pygame.mixer.music.play(loops=-1)
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
             topLabelIF= ttk.Label(top,image=imagenT).pack()
@@ -307,12 +318,13 @@ def memes(respuesta):
 
         else :
             
-            print("Meme en Gif")
+            
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
-            print(meme)
+            pygame.mixer.music.load(current_directory+ "/data/canciones/"+str(meme)+".mp3")
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
+            pygame.mixer.music.play(loops=-1)
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
             threading.Thread(play_gif())
@@ -355,6 +367,7 @@ def visualizarGif(ind):
 
 #Cerrar ventana y habilitar botones :)
 def habilitarBtn():
+    pygame.mixer.music.stop()
     top.destroy()
     botonSi.config(state=NORMAL,style="Accent.TButton")
     botonNo.config(state=NORMAL,style="Accent.TButton")
