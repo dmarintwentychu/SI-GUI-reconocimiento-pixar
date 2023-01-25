@@ -15,7 +15,6 @@ import numpy as np
 import threading
 import random
 from PIL import ImageSequence
-import pygame
 
 
 current_directory = os.getcwd()
@@ -228,7 +227,7 @@ def otraVentana():
 
     botonesPrincipal()
 
-    
+
     frame.place(x=50,y=15,width=900, height=425)
     frame.pack_propagate(0)
 
@@ -337,21 +336,6 @@ def play_gif():
         top.update()
         time.sleep(0.02)
     
-
-
-#Funcion para visualizar gifs
-def visualizarGif(ind):
-    global canvas
-
-    frame = frames[ind]
-    ind += 1
-    if ind == framesCnt:
-        ind = 0
-    canvas.create_image(0, 0, image=frame, anchor=NW)
-    top.after(20, visualizarGif, ind)
-
-
-
 
 #Cerrar ventana y habilitar botones :)
 def habilitarBtn():
