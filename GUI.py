@@ -19,10 +19,6 @@ from PIL import ImageSequence
 
 current_directory = os.getcwd()
 
-
-
-#IMPORTANTE: ESTO TARDA 5s en funcionar + PUEDE DAR ERRORES AL HACER EL PIP INSTALL🤬🖕 (Solucionarlo es fácil al menos en windows, en mac ni idea)
-
 #PANTALLA SPLASH:
 
 #Formato de la pantalla de splash y vídeo:
@@ -181,7 +177,7 @@ def predecir():
     image = np.array(image.resize((width, baseheight)))
     print(image.shape)
 
-    #Como el formato es el siguiente (None,224,224,1) -> (1, 224, 224, 1):
+    #Como el formato es el siguiente (None,224,224,1) <- (1, 224, 224):
 
     image = np.expand_dims(image, axis=0) # To make the shape as (1, 224, 224)
     image = np.expand_dims(image, axis=-1) # To make the shape as (1, 224, 224, 1)
