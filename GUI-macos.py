@@ -19,10 +19,6 @@ from PIL import ImageSequence
 
 current_directory = os.getcwd()
 
-
-
-#IMPORTANTE: ESTO TARDA 5s en funcionar + PUEDE DAR ERRORES AL HACER EL PIP INSTALL🤬🖕 (Solucionarlo es fácil al menos en windows, en mac ni idea)
-
 #PANTALLA SPLASH:
 
 #Formato de la pantalla de splash y vídeo:
