@@ -10,7 +10,6 @@ from tkinter import font
 from tkinter import ttk
 from tkinter.ttk import Progressbar
 from tkinter import messagebox
-#from ttkthemes import ThemedTk
 import numpy as np
 import threading
 import random
@@ -272,7 +271,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
-            abrirCancion(listCanciones,ruta)
+            threading.Thread(target =abrirCancion(listCanciones,ruta))
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
@@ -283,7 +282,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            abrirCancion(listCanciones,ruta)
+            threading.Thread(target = abrirCancion(listCanciones,ruta))
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
            
             dummy = Image.open(path)
@@ -301,7 +300,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
-            abrirCancion(listCanciones,ruta)
+            threading.Thread(target =abrirCancion(listCanciones,ruta))
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
@@ -314,7 +313,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
-            abrirCancion(listCanciones,ruta)
+            threading.Thread(target =abrirCancion(listCanciones,ruta))
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
      
             dummy = Image.open(path)
