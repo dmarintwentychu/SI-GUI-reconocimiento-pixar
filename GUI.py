@@ -319,6 +319,8 @@ def memes(respuesta):
                 top.after((framesCnt), habilitarBtn)
             else:
                 path = current_directory+"/data/memesGifTristes/"+ "1" +".gif"
+                dummy = Image.open(path)
+                framesCnt = dummy.n_frames
                 threading.Thread(target = abrirCancion(1,ruta)).start()
                 threading.Thread(play_gif()).start()
                 top.after((framesCnt), habilitarBtn)
