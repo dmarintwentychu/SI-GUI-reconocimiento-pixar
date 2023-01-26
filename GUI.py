@@ -269,7 +269,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
-            threading.Thread(target =abrirCancion(listCanciones,ruta))
+            threading.Thread(target =abrirCancion(listCanciones,ruta)).start()
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
@@ -280,12 +280,12 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            threading.Thread(target = abrirCancion(listCanciones,ruta))
+            threading.Thread(target = abrirCancion(listCanciones,ruta)).start()
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
            
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
-            threading.Thread(play_gif())
+            threading.Thread(play_gif()).start()
             top.after((framesCnt), habilitarBtn)
     
 
@@ -298,7 +298,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
-            threading.Thread(target =abrirCancion(listCanciones,ruta))
+            threading.Thread(target =abrirCancion(listCanciones,ruta)).start()
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
@@ -306,20 +306,24 @@ def memes(respuesta):
             top.after(5000, habilitarBtn)
 
         else :
-            
-            
-            
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
-            meme = random.randint(2,len(listaArchivos))
-            threading.Thread(target =abrirCancion(listCanciones,ruta))
-            path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
-     
-            dummy = Image.open(path)
-            framesCnt = dummy.n_frames
-            threading.Thread(play_gif())
-            top.after((framesCnt), habilitarBtn)
+            meme = random.randint(1,len(listaArchivos))
+            print(meme)
+            if (meme != 1):
+                threading.Thread(target = abrirCancion(listCanciones,ruta)).start()
+                path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
+        
+                dummy = Image.open(path)
+                framesCnt = dummy.n_frames
+                threading.Thread(play_gif()).start()
+                top.after((framesCnt), habilitarBtn)
+            else:
+                path = current_directory+"/data/memesGifTristes/"+ "1" +".gif"
+                threading.Thread(target = abrirCancion(1,ruta)).start()
+                threading.Thread(play_gif()).start()
+                top.after((framesCnt), habilitarBtn)
 
-
+                
 def play_gif():
     global path,top
 
