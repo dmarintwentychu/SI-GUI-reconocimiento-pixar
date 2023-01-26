@@ -13,7 +13,6 @@ install("imutils")
 install("tensorflow_hub")
 install("pyyaml")
 install("h5py")
-install("ttkthemes")
 install("sounddevice")
 install("scipy")
 #pip install tensorflow==2.9.2 Tiene que ser esta versión o si no no es compatible
