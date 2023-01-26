@@ -15,7 +15,8 @@ import numpy as np
 import threading
 import random
 from PIL import ImageSequence
-
+from pydub import AudioSegment
+from playsound import playsound
 
 current_directory = os.getcwd()
 
