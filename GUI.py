@@ -315,7 +315,7 @@ def memes(respuesta):
             threading.Thread(play_gif()).start()
             top.after((framesCnt), habilitarBtn)
     
-                
+#Funcion para hacer correr los gifs 
 def play_gif():
     global path,top
 
