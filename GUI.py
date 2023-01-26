@@ -17,9 +17,7 @@ import random
 from PIL import ImageSequence
 import sounddevice
 import scipy.io.wavfile
-from pycaw.pycaw import AudioUtilities, ISimpleAudioVolume
-from ctypes import cast, POINTER
-from comtypes import CLSCTX_ALL
+
 
 
 current_directory = os.getcwd()
