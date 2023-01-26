@@ -273,7 +273,7 @@ def memes(respuesta):
            
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
-            playsound(listCanciones)
+            playsound(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav')
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
@@ -284,7 +284,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            playsound(listCanciones)
+            playsound(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav')
             print(meme)
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
             dummy = Image.open(path)
@@ -301,7 +301,7 @@ def memes(respuesta):
             print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
-            playsound(listCanciones)
+            playsound(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav')
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
@@ -314,7 +314,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
-            playsound(listCanciones)
+            playsound(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav')
             print(meme)
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
             dummy = Image.open(path)
