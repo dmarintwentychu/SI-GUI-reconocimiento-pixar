@@ -56,7 +56,10 @@ print(f"TensorFlow version: {tf.__version__}")
 10: Terminamos  de instalar las librerias necesarias:
 Pip Install h5py
 pip Install pyyaml
+pip install playsound
  
+
+11: Tras todo esto debería funcionarle la aplicación, asi que pruebelo abriendo GUI-macos.exe
  
 si quieres abrir conda base = source ~/miniforge3/bin/activate  
 para activar el enviroment de tensorflow = conda activate tensorflow (si no te sabes el nombre del enviroment haz conda info-envs)
@@ -64,7 +67,6 @@ para activar el enviroment de tensorflow = conda activate tensorflow (si no te s
 
 si abres con vscode el interprete te tiene que quedar un tal que asi ( python 3.8.15 ⁓/miniforge3/envs/tensorflow/bin/python )
 
-a veces hay errorers de bus o segmentacion ( no hemos podido ver porque es algo de arm64 y memory allocation  , cierra abre vscode e intenta otra vez )
+a veces hay errorers de bus o segmentacion ( no hemos podido ver porque es algo de arm64 y memory allocation  , cierra y abre el programa e intenta otra vez )
 
 
-11: Tras todo esto debería funcionarle la aplicación, asi que pruebelo abriendo GUI-macos.exe
