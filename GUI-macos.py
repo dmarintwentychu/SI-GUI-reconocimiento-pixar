@@ -177,13 +177,13 @@ def predecir():
     baseheight = 224
     width = 224
     image = np.array(image.resize((width, baseheight)))
-    print(image.shape)
+    #print(image.shape)
 
     #Como el formato es el siguiente (None,224,224,1) -> (1, 224, 224, 1):
 
     image = np.expand_dims(image, axis=0) # To make the shape as (1, 224, 224)
     image = np.expand_dims(image, axis=-1) # To make the shape as (1, 224, 224, 1)
-    print(image.shape)
+    #print(image.shape)
 
     #HAY QUE HACER EL MISMO PREPROCESAMIENTO O SI NO NO FUNCIONA .|.
     normalization_layer = tf.keras.layers.Rescaling(1./255)
@@ -270,7 +270,7 @@ def memes(respuesta):
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
         listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesFelices")))
         if imgGif == 1:
-            print("Meme en Imagen")
+            #print("Meme en Imagen")
            
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
@@ -281,12 +281,12 @@ def memes(respuesta):
             topLabelIF= ttk.Label(top,image=imagenF).pack()
             top.after(2000, habilitarBtn)
         else :
-            print("Meme en Gif")
+            #print("Meme en Gif")
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
             threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav'))
-            print(meme)
+            #print(meme)
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
@@ -299,7 +299,7 @@ def memes(respuesta):
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
         listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesTristes")))
         if imgGif == 1:
-            print("Meme en Imagen")
+            #print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
             threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav'))
@@ -311,12 +311,11 @@ def memes(respuesta):
 
         else :
             
-            print("Meme en Gif")
+            #print("Meme en Gif")
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
             threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav'))
-            print(meme)
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
             dummy = Image.open(path)
             framesCnt = dummy.n_frames

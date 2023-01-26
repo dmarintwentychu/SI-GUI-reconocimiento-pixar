@@ -173,13 +173,13 @@ def predecir():
     baseheight = 224
     width = 224
     image = np.array(image.resize((width, baseheight)))
-    print(image.shape)
+    #print(image.shape)
 
     #Como el formato es el siguiente (None,224,224,1) <- (1, 224, 224):
 
     image = np.expand_dims(image, axis=0)  #(1, 224, 224)
     image = np.expand_dims(image, axis=-1) #(1, 224, 224, 1)
-    print(image.shape)
+    #print(image.shape)
 
     #HAY QUE HACER EL MISMO PREPROCESAMIENTO O SI NO NO FUNCIONA
     normalization_layer = tf.keras.layers.Rescaling(1./255)
@@ -306,10 +306,8 @@ def memes(respuesta):
         else :
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(1,len(listaArchivos))
-            print(meme)
             threading.Thread(target = abrirCancion(listCanciones,ruta)).start()
-            path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
-    
+            path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"    
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
             threading.Thread(play_gif()).start()
