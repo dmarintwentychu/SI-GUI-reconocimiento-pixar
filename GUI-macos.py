@@ -15,9 +15,8 @@ import numpy as np
 import threading
 import random
 from PIL import ImageSequence
-from pydub import AudioSegment
-from playsound import playsound
 
+#audio not working
 current_directory = os.getcwd()
 
 #PANTALLA SPLASH:
@@ -267,13 +266,10 @@ def memes(respuesta):
 
     if respuesta==1:
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
-        listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesFelices")))
         if imgGif == 1:
             print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
-
             meme = random.randint(1,len(listaArchivos))
-            abrirCancion(listCanciones)
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
@@ -284,7 +280,6 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            abrirCancion(listCanciones)
             print(meme)
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
             dummy = Image.open(path)
@@ -296,12 +291,10 @@ def memes(respuesta):
     else :
 
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
-        listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesTristes")))
         if imgGif == 1:
             print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
-            abrirCancion(listCanciones)
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
@@ -314,7 +307,6 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
-            abrirCancion(listCanciones)
             print(meme)
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
             dummy = Image.open(path)
@@ -341,8 +333,7 @@ def play_gif():
         top.update()
         time.sleep(0.02)
     #top.after(0,play_gif)
-def abrirCancion(ruta):
-    playsound('ruta')
+
 
 #Funcion para visualizar gifs
 def visualizarGif(ind):
