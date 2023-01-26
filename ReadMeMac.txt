@@ -56,6 +56,7 @@ print(f"TensorFlow version: {tf.__version__}")
 10: Terminamos  de instalar las librerias necesarias:
 Pip Install h5py
 pip Install pyyaml
+pip install playsound
  
 
 11: Tras todo esto debería funcionarle la aplicación, asi que pruebelo abriendo GUI-macos.exe
