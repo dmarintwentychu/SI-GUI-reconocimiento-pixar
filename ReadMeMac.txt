@@ -53,13 +53,7 @@ print(f"TensorFlow version: {tf.__version__}")
 ------------------------------------------------------------------------------------------------------------------
 
 
-10: Terminamos  de instalar las librerias necesarias:
-Pip Install h5py
-pip Install pyyaml
-pip install playsound
- 
-
-11: Tras todo esto debería funcionarle la aplicación, asi que pruebelo abriendo GUI-macos.exe
+10: Tras todo esto debería funcionarle la aplicación, asi que pruebelo abriendo GUI-macos.exe
  
 si quieres abrir conda base = source ~/miniforge3/bin/activate  
 para activar el enviroment de tensorflow = conda activate tensorflow (si no te sabes el nombre del enviroment haz conda info-envs)
