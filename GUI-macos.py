@@ -19,10 +19,6 @@ from PIL import ImageSequence
 
 current_directory = os.getcwd()
 
-
-
-#IMPORTANTE: ESTO TARDA 5s en funcionar + PUEDE DAR ERRORES AL HACER EL PIP INSTALL🤬🖕 (Solucionarlo es fácil al menos en windows, en mac ni idea)
-
 #PANTALLA SPLASH:
 
 #Formato de la pantalla de splash y vídeo:
@@ -270,10 +266,13 @@ def memes(respuesta):
 
     if respuesta==1:
         top.title("😃😃😃😃😃😃😃😃😃😃😃😃")
+        listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesFelices")))
         if imgGif == 1:
             print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
+
             meme = random.randint(1,len(listaArchivos))
+            abrirCancion(listCanciones)
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
@@ -284,6 +283,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
+            abrirCancion(listCanciones)
             print(meme)
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
             dummy = Image.open(path)
@@ -295,10 +295,12 @@ def memes(respuesta):
     else :
 
         top.title("💀💀💀💀💀💀💀💀💀💀💀💀💀")
+        listCanciones = random.randint(1,len(os.listdir(current_directory+"/data/cancionesTristes")))
         if imgGif == 1:
             print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
+            abrirCancion(listCanciones)
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
@@ -311,6 +313,7 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
+            abrirCancion(listCanciones)
             print(meme)
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
             dummy = Image.open(path)
@@ -337,7 +340,8 @@ def play_gif():
         top.update()
         time.sleep(0.02)
     #top.after(0,play_gif)
-
+def abrirCancion(ruta):
+    playsound('ruta')
 
 #Funcion para visualizar gifs
 def visualizarGif(ind):
