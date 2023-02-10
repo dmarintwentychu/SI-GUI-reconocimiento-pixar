@@ -421,7 +421,7 @@ def load():
         progress["value"] = 10*i
         i+=1
     elif i == 8:
-        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={'KerasLayer':hub.KerasLayer})
+        model = tf.keras.models.load_model((current_directory + "/Model/model.h5"),  custom_objects={"KerasLayer":hub.KerasLayer})
         txt = (str(10*i)+'%')
         progress_label.config(text=txt)
         progress_label.after(600,load)
