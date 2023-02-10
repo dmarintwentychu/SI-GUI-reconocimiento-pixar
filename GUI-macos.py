@@ -274,23 +274,26 @@ def memes(respuesta):
            
             listaArchivos = os.listdir(current_directory+"/data/memesImgFelices")
             meme = random.randint(1,len(listaArchivos))
-            threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav'))
+            
             dummy = Image.open(current_directory+"/data/memesImgFelices/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenF = ImageTk.PhotoImage(dummy)
+            
             topLabelIF= ttk.Label(top,image=imagenF).pack()
+            threading.Thread(playS(current_directory+"/data/cancionesFelices/" +str(listCanciones) + '.wav')).start()
             top.after(2000, habilitarBtn)
         else :
             #print("Meme en Gif")
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifFelices")
             meme = random.randint(1,len(listaArchivos))
-            threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav'))
+            
             #print(meme)
             path = current_directory+"/data/memesGifFelices/"+ str(meme)+".gif"
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
-            threading.Thread(play_gif())
+            threading.Thread(play_gif()).start()
+            threading.Thread(playS(current_directory+"/data/cancionesFelices/" +str(listCanciones) + '.wav')).start()
             top.after((framesCnt), habilitarBtn)
     
 
@@ -302,11 +305,12 @@ def memes(respuesta):
             #print("Meme en Imagen")
             listaArchivos = os.listdir(current_directory+"/data/memesImgTristes")
             meme = random.randint(1,len(listaArchivos))
-            threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav'))
+            
             dummy = Image.open(current_directory+"/data/memesImgTristes/"+ str(meme)+".jpg")
             dummy = dummy.resize((500,350))
             imagenT = ImageTk.PhotoImage(dummy)
             topLabelIF= ttk.Label(top,image=imagenT).pack()
+            threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav')).start()
             top.after(2000, habilitarBtn)
 
         else :
@@ -315,11 +319,12 @@ def memes(respuesta):
             
             listaArchivos = os.listdir(current_directory+"/data/memesGifTristes")
             meme = random.randint(2,len(listaArchivos))
-            threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav'))
+            
             path = current_directory+"/data/memesGifTristes/"+ str(meme)+".gif"
             dummy = Image.open(path)
             framesCnt = dummy.n_frames
-            threading.Thread(play_gif())
+            threading.Thread(play_gif()).start()
+            threading.Thread(playS(current_directory+"/data/cancionesTristes/" +str(listCanciones) + '.wav')).start()
             top.after((framesCnt), habilitarBtn)
 
 def playS(ruta):
