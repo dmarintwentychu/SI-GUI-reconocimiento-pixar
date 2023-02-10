@@ -15,5 +15,7 @@ install("pyyaml")
 install("h5py")
 install("sounddevice")
 install("scipy")
-#pip install tensorflow==2.9.2 Tiene que ser esta versión o si no no es compatible
+install("tensorflow")
 install("playsound")
+
+#parece ser que han actualizado algo y 
