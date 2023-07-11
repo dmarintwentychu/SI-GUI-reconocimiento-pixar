@@ -10,4 +10,5 @@
 3.1.3º Dentro de FileSystem, haga doble click en "LongPathsEnabled" y cambie la información del valor de 0 a 1 (A nosotros nos aparece "LongPathsEnabled" en la 4ª posición)
 3.2º: Vuelva a intentar instalar tensorflow con el comando de "3º"
 
-4º: Ejecutar la aplicación GUI.exe
+4º: Ejecutar launch-win.bat
+
