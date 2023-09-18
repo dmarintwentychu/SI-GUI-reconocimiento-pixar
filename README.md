@@ -1,4 +1,4 @@
-# SI
+# SI - GUI
 
 En caso de error borrar:
 
