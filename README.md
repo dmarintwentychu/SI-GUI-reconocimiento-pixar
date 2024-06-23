@@ -6,4 +6,4 @@ OSError: SavedModel file does not exist at: C:\Users\user\AppData\Local\Temp\tfh
 
 TENDRIAS QUE BORRAR EL DIRECTORIO : (wffdfas423423dfasfaweferg)
 
-#Antes de iniciar la gui lease ReadMeWin.txt en  el caso de tener un dispositivo Windows o ReadMeMac.txt en  el caso de tener un dispositivo Mac e inicie el programa imports.
+Antes de iniciar la gui lease ReadMeWin.txt en  el caso de tener un dispositivo Windows o ReadMeMac.txt en  el caso de tener un dispositivo Mac e inicie el programa imports.
